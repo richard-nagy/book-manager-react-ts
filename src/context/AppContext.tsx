@@ -1,7 +1,8 @@
 import { createContext } from "react";
+import type { Theme } from "./contextTypes";
 
 type AppContextType = {
-    theme: "light" | "dark";
+    theme: Theme;
     toggleTheme: () => void;
 };
 

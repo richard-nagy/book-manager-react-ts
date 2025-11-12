@@ -1,16 +1,19 @@
 import { useState, type ReactNode } from "react";
 import { AppContext } from "./AppContext";
+import { Theme } from "./contextTypes";
 
-type ContextProviderInterface = {
+type AppContextProviderInterface = {
     children: ReactNode;
 };
-export const ContextProvider = (props: ContextProviderInterface) => {
+export const AppContextProvider = (props: AppContextProviderInterface) => {
     const { children } = props;
 
-    const [theme, setTheme] = useState<"light" | "dark">("light");
+    const [theme, setTheme] = useState<Theme>(Theme.Dark);
 
     const toggleTheme = () =>
-        setTheme((t) => (t === "light" ? "dark" : "light"));
+        setTheme((t) =>
+            t === Theme.Light ? Theme.Dark : Theme.Light,
+        );
 
     return (
         <AppContext.Provider value={{ theme, toggleTheme }}>
