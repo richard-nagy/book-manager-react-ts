@@ -1,12 +1,6 @@
 import { debounce } from "lodash";
-import {
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-    type ChangeEvent,
-    type FC,
-} from "react";
+import { useCallback, useEffect, useMemo, useState, type FC } from "react";
+import Input from "./components/Input";
 
 interface BookDoc {
     title: string;
@@ -19,7 +13,6 @@ interface OpenLibraryResponse {
 }
 
 const App: FC = () => {
-    const [inputValue, setInputValue] = useState("");
     const [books, setBooks] = useState<BookDoc[]>([]);
 
     const fetchBooks = useCallback(async (searchQuery: string) => {
@@ -41,13 +34,6 @@ const App: FC = () => {
         [fetchBooks],
     );
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.value;
-        setInputValue(newValue);
-
-        debouncedTransition(newValue);
-    };
-
     useEffect(() => {
         return () => {
             debouncedTransition.cancel();
@@ -56,7 +42,7 @@ const App: FC = () => {
 
     return (
         <div>
-            <input type="text" value={inputValue} onChange={handleChange} />
+            <Input onChange={debouncedTransition} debounceMs={250} />
             <ul>
                 {books.map((b) => (
                     <li key={b.key}>{b.title}</li>
