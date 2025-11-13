@@ -1,4 +1,4 @@
-import BookList from "./pages/book-list/BookList";
+import BookList from "./pages/book-search/List";
 
 const App = () => {
     return <BookList />;
