@@ -5,6 +5,7 @@ import {
     useMemo,
     useState,
     type ChangeEvent,
+    type FC,
     type ReactElement,
 } from "react";
 
@@ -14,7 +15,9 @@ type DebouncedInputType = {
     /** If defined, the input change will be debounced by this value in milliseconds.  */
     debounceMs?: number;
 };
-const DebouncedInput = (props: DebouncedInputType): ReactElement => {
+const DebouncedInput: FC<DebouncedInputType> = (
+    props: DebouncedInputType,
+): ReactElement => {
     const { debounceMs, onChange } = props;
 
     const [inputValue, setInputValue] = useState("");

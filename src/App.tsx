@@ -1,42 +1,7 @@
-import { useCallback, useState, type FC } from "react";
-import DebouncedInput from "./Input";
+import BookList from "./pages/book-list/BookList";
 
-interface BookDoc {
-    title: string;
-    author_name: string[];
-    key: string;
-}
-
-interface OpenLibraryResponse {
-    docs: BookDoc[];
-}
-
-const App: FC = () => {
-    const [books, setBooks] = useState<BookDoc[]>([]);
-
-    const fetchBooks = useCallback(async (searchQuery: string) => {
-        try {
-            const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(searchQuery)}`;
-            const response = await fetch(url);
-            const data: OpenLibraryResponse = await response.json();
-            setBooks(data.docs);
-        } catch (error) {
-            console.error(error);
-        }
-    }, []);
-
-    return (
-        <div>
-            <DebouncedInput onChange={fetchBooks} debounceMs={250} />
-            <ul>
-                {books.map((b) => (
-                    <li key={b.key}>
-                        {b.author_name} - {b.title}
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+const App = () => {
+    return <BookList />;
 };
 
 export default App;
