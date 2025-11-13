@@ -8,13 +8,13 @@ import {
     type ReactElement,
 } from "react";
 
-type InputType = {
+type DebouncedInputType = {
     /** Will run on input change. */
     onChange: (value: string) => void;
     /** If defined, the input change will be debounced by this value in milliseconds.  */
     debounceMs?: number;
 };
-const Input = (props: InputType): ReactElement => {
+const DebouncedInput = (props: DebouncedInputType): ReactElement => {
     const { debounceMs, onChange } = props;
 
     const [inputValue, setInputValue] = useState("");
@@ -50,4 +50,4 @@ const Input = (props: InputType): ReactElement => {
     return <input type="text" value={inputValue} onChange={handleChange} />;
 };
 
-export default Input;
+export default DebouncedInput;

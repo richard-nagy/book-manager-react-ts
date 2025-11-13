@@ -1,5 +1,5 @@
 import { useCallback, useState, type FC } from "react";
-import Input from "./components/Input";
+import DebouncedInput from "./Input";
 
 interface BookDoc {
     title: string;
@@ -27,10 +27,12 @@ const App: FC = () => {
 
     return (
         <div>
-            <Input onChange={fetchBooks} debounceMs={250} />
+            <DebouncedInput onChange={fetchBooks} debounceMs={250} />
             <ul>
                 {books.map((b) => (
-                    <li key={b.key}>{b.title}</li>
+                    <li key={b.key}>
+                        {b.author_name} - {b.title}
+                    </li>
                 ))}
             </ul>
         </div>
