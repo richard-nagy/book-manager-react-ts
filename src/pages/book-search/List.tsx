@@ -1,4 +1,3 @@
-import { ModeToggle } from "@/components/mode-toggle";
 import DebouncedInput from "@/pages/book-search/DebouncedInput";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
@@ -30,7 +29,6 @@ const List = () => {
 
     return (
         <div>
-            <ModeToggle />
             <DebouncedInput onChange={fetchBooks} debounceMs={250} />
             <ul>
                 {books.map((b) => (
