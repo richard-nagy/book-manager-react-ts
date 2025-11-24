@@ -1,4 +1,4 @@
-import Book from "@/components/book";
+import Book from "@/components/Book";
 import { useBookSearch } from "@/components/book/BookSearchContext";
 import {
     Empty,
@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/empty";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@/components/ui/spinner";
-import DebouncedInput from "@/routes/book-search/DebouncedInput";
+import DebouncedInput from "@/pages/book-search/DebouncedInput";
 
 const List = () => {
     const { books, bookFetchIsLoading, fetchBooks } = useBookSearch();

@@ -1,11 +1,11 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import { SettingsDropDown } from "@/components/settings-dropdown";
-import { ThemeProvider } from "@/components/theme/theme-provider";
-import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { AppSidebar } from "@/components/AppSidebar";
+import { SettingsDropDown } from "@/components/SettingsDropdown";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { BookSearchProvider } from "./components/book/BookSearchProvider";
-import List from "./routes/book-search/List";
+import List from "./pages/book-search/List";
 
 const App = () => {
     return (

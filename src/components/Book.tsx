@@ -1,4 +1,4 @@
-import { ToggleButton } from "@/components/toggle-button";
+import { ToggleButton } from "@/components/ToggleButton";
 import { Button } from "@/components/ui/button";
 import {
     Item,
