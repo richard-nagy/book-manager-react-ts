@@ -7,6 +7,7 @@ import {
     useState,
     type ChangeEvent,
     type FC,
+    type KeyboardEvent,
     type ReactElement,
 } from "react";
 
@@ -15,13 +16,17 @@ type DebouncedInputProps = {
     debounceMs?: number;
     /** Placeholder text for the input. */
     placeholder?: string;
+    /** className prop for the Input component. */
+    className?: string;
     /** Runs on input change. */
     onChange: (value: string) => void | Promise<void>;
+    /** Handle on key down event. */
+    handleKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;
 };
 const DebouncedInput: FC<DebouncedInputProps> = (
     props: DebouncedInputProps,
 ): ReactElement => {
-    const { debounceMs, placeholder, onChange } = props;
+    const { debounceMs, placeholder, className, onChange, handleKeyDown } = props;
 
     const [inputValue, setInputValue] = useState("");
 
@@ -55,6 +60,8 @@ const DebouncedInput: FC<DebouncedInputProps> = (
 
     return (
         <Input
+            onKeyDown={handleKeyDown}
+            className={className}
             type="text"
             value={inputValue}
             placeholder={placeholder}
