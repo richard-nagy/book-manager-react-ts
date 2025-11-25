@@ -1,6 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+    createBrowserRouter,
+    Navigate,
+    RouterProvider,
+} from "react-router-dom";
 import App from "./App";
 import "./index.css";
 import List from "./pages/book-search/List";
@@ -15,6 +19,10 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
+                element: <Navigate to="search" />,
+            },
+            {
+                path: "search",
                 element: <List />,
             },
             {

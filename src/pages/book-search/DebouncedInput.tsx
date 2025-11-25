@@ -12,6 +12,8 @@ import {
 } from "react";
 
 type DebouncedInputProps = {
+    /** Default value of the input. */
+    defaultValue?: string;
     /** If defined, the input change will be debounced by this value in milliseconds.  */
     debounceMs?: number;
     /** Placeholder text for the input. */
@@ -26,10 +28,16 @@ type DebouncedInputProps = {
 const DebouncedInput: FC<DebouncedInputProps> = (
     props: DebouncedInputProps,
 ): ReactElement => {
-    const { debounceMs, placeholder, className, onChange, handleKeyDown } =
-        props;
+    const {
+        debounceMs,
+        placeholder,
+        className,
+        defaultValue,
+        onChange,
+        handleKeyDown,
+    } = props;
 
-    const [inputValue, setInputValue] = useState("");
+    const [inputValue, setInputValue] = useState(defaultValue);
 
     const debouncedOnChange = useMemo(
         () =>
@@ -61,11 +69,11 @@ const DebouncedInput: FC<DebouncedInputProps> = (
 
     return (
         <Input
-            onKeyDown={handleKeyDown}
             className={className}
             type="text"
             value={inputValue}
             placeholder={placeholder}
+            onKeyDown={handleKeyDown}
             onChange={handleChange}
         />
     );

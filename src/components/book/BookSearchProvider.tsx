@@ -25,7 +25,10 @@ export interface BookSearchContextType {
      * @param searchQuery The query filtering is based upon.
      * @param startIndex Starting index from where the books will be returned from the original list.
      */
-    fetchBooks: (searchQuery: string, startIndex?: number) => Promise<void>;
+    fetchBooks: (
+        searchQuery: string | null,
+        startIndex?: number,
+    ) => Promise<void>;
     /**
      * Fetches a specific book.
      * @param volumeId
@@ -44,7 +47,7 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
     const [volumeFetchIsLoading, setVolumeFetchIsLoading] = useState(false);
 
     const fetchBooks = useCallback(
-        async (searchQuery: string, startIndex = 0): Promise<void> => {
+        async (searchQuery: string | null, startIndex = 0): Promise<void> => {
             try {
                 if (!apiKey) {
                     throw new Error("Missing API Key");

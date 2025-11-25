@@ -11,25 +11,40 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import DebouncedInput from "@/pages/book-search/DebouncedInput";
 import { Search } from "lucide-react";
-import { useCallback, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useState, type KeyboardEvent } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const List = () => {
     const { books, bookFetchIsLoading, fetchBooks } = useBookSearch();
 
-    const [searchQuery, setSearchQuery] = useState<string>("");
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const fetchBooksWithQuery = useCallback(() => {
-        fetchBooks(searchQuery);
-    }, [fetchBooks, searchQuery]);
+    const searchQuery = searchParams.get("q") ?? undefined;
+
+    const [inputValue, setInputValue] = useState<string | undefined>(
+        searchQuery,
+    );
+
+    useEffect(() => {
+        setInputValue(searchQuery);
+    }, [searchQuery]);
+
+    const navigateToSearchQuery = useCallback(() => {
+        setSearchParams({ q: inputValue ?? "" });
+    }, [inputValue, setSearchParams]);
 
     const handleKeyDown = useCallback(
         (event: KeyboardEvent<HTMLInputElement>) => {
-            if (event.key === "Enter") {
-                fetchBooks(searchQuery);
+            if (event.key === "Enter" && searchQuery) {
+                navigateToSearchQuery();
             }
         },
-        [fetchBooks, searchQuery],
+        [navigateToSearchQuery, searchQuery],
     );
+
+    useEffect(() => {
+        fetchBooks(searchQuery ?? null);
+    }, [fetchBooks, searchQuery]);
 
     return (
         <>
@@ -38,10 +53,11 @@ const List = () => {
                     className="w-75"
                     // debounceMs={250}
                     // placeholder="Start typing to search for books..."
-                    onChange={setSearchQuery}
+                    defaultValue={inputValue}
+                    onChange={setInputValue}
                     handleKeyDown={handleKeyDown}
                 />
-                <Button onClick={fetchBooksWithQuery}>
+                <Button onClick={navigateToSearchQuery}>
                     <Search /> Search
                 </Button>
             </div>

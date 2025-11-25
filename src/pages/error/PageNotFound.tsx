@@ -6,10 +6,7 @@ const PageNotFound: FC = (): ReactElement => {
         <div className="text-center p-12">
             <h2 className="text-6xl font-bold mb-4">404</h2>
             <p className="text-2xl mb-6">Page Not Found</p>
-            <Link
-                to="/"
-                className="underline"
-            >
+            <Link to="/" className="underline">
                 Go Home
             </Link>
         </div>
