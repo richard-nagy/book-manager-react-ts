@@ -4,11 +4,14 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 import List from "./pages/book-search/List";
+import CustomErrorBoundary from "./pages/error/CustomErrorBoundary";
+import PageNotFound from "./pages/error/PageNotFound";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
+        errorElement: <CustomErrorBoundary />,
         children: [
             {
                 path: "/",
@@ -17,6 +20,10 @@ const router = createBrowserRouter([
             {
                 path: "book",
                 element: <>book</>,
+            },
+            {
+                path: "*",
+                element: <PageNotFound />,
             },
         ],
     },
