@@ -5,8 +5,10 @@ import {
 } from "lucide-react";
 import * as React from "react";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Link, type LinkProps } from "react-router-dom";
+import { buttonVariants } from "./button-variants";
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
     return (
@@ -47,9 +49,9 @@ function PaginationLink({
     isActive,
     size = "icon",
     ...props
-}: PaginationLinkProps) {
+}: PaginationLinkProps & LinkProps) {
     return (
-        <a
+        <Link
             aria-current={isActive ? "page" : undefined}
             data-slot="pagination-link"
             data-active={isActive}
@@ -123,5 +125,5 @@ export {
     PaginationItem,
     PaginationLink,
     PaginationNext,
-    PaginationPrevious,
+    PaginationPrevious
 };

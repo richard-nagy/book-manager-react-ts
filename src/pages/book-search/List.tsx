@@ -20,9 +20,11 @@ import {
     type KeyboardEvent,
 } from "react";
 import { useSearchParams } from "react-router-dom";
+import ListPagination from "./ListPagination";
 
 const List = () => {
-    const { books, bookFetchIsLoading, fetchBooks } = useBookSearch();
+    const { books, numberOfPages, bookFetchIsLoading, fetchBooks } =
+        useBookSearch();
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -56,8 +58,8 @@ const List = () => {
     }, [fetchBooks, searchQuery]);
 
     return (
-        <>
-            <div className="left flex flex-row gap-2 justify-center align-middle absolute bg-primary-foreground pb-3 z-1 w-[calc(100%-24px)]">
+        <div className="flex flex-col gap-10">
+            <div className="left flex flex-row gap-2 justify-center align-middle absolute bg-primary-foreground z-1 w-[calc(100%-24px)]">
                 <DebouncedInput
                     className="w-75"
                     // debounceMs={250}
@@ -83,13 +85,14 @@ const List = () => {
                         </EmptyDescription>
                     </EmptyHeader>
                 </Empty>
-            :   <div className="flex flex-wrap gap-6 mt-15 justify-center">
+                : <div className="flex flex-wrap gap-6 mt-15 justify-center">
                     {books?.map((b) => (
                         <Book key={b.id} book={b} />
                     ))}
                 </div>
             }
-        </>
+            {numberOfPages > 0 && <ListPagination />}
+        </div>
     );
 };
 

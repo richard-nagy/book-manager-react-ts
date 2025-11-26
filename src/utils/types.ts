@@ -21,7 +21,6 @@ export interface Volume {
 
 /** Response of the search. */
 export interface BookResponse {
-    kind: string;
     totalItems: number;
     items?: Volume[];
 }

@@ -1,3 +1,4 @@
+import { isStringEmpty } from "@/utils/common";
 import type { BookResponse, Volume } from "@/utils/types";
 import { useCallback, useState, type ReactNode } from "react";
 import { toast } from "sonner";
@@ -13,9 +14,14 @@ const baseUrl = "https://www.googleapis.com/books/v1/volumes";
 export interface BookSearchContextType {
     /**
      * List of books.
-     * If null, no search was performed.
+     * If null, there are no results.
      */
     books: Volume[] | null;
+    /**
+     * Number of available pages.
+     * If null, there are no results.
+     */
+    numberOfPages: number;
     /** If true, the fetching of the books is active. */
     bookFetchIsLoading: boolean;
     /** If true, the fetching of a volume is active. */
@@ -35,6 +41,8 @@ export interface BookSearchContextType {
      * @returns Returns the the data of the book. Returns null if there were no result.
      */
     getBookByVolumeId: (volumeId: string) => Promise<Volume | null>;
+    /** Clears books results and number of pages. */
+    clearResults: () => void;
 }
 
 interface BookSearchProviderProps {
@@ -43,8 +51,19 @@ interface BookSearchProviderProps {
 
 export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
     const [books, setBooks] = useState<Volume[] | null>(null);
-    const [bookFetchIsLoading, setBookFetchIsLoading] = useState(false);
-    const [volumeFetchIsLoading, setVolumeFetchIsLoading] = useState(false);
+    const [numberOfPages, setNumberOfPages] = useState<number>(0);
+    const [bookFetchIsLoading, setBookFetchIsLoading] =
+        useState<boolean>(false);
+    const [volumeFetchIsLoading, setVolumeFetchIsLoading] =
+        useState<boolean>(false);
+
+    const clearResults = useCallback(
+        () => {
+            setBooks(null);
+            setNumberOfPages(0);
+        },
+        [],
+    );
 
     const fetchBooks = useCallback(
         async (searchQuery: string | null, startIndex = 0): Promise<void> => {
@@ -53,8 +72,8 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
                     throw new Error("Missing API Key");
                 }
 
-                if (!searchQuery || searchQuery === "") {
-                    setBooks(null);
+                if (!searchQuery || isStringEmpty(searchQuery)) {
+                    clearResults();
                     return;
                 }
 
@@ -72,6 +91,10 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
 
                 const data: BookResponse = await response.json();
 
+                if (data.totalItems > 0) {
+                    setNumberOfPages(Math.floor(data.totalItems / maxResults));
+                }
+
                 if (data.items && (data.items?.length ?? 0) > 0) {
                     setBooks(data.items);
                 }
@@ -82,7 +105,7 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
                     errorMessage = error.message;
                 }
 
-                setBooks(null);
+                clearResults();
                 console.error(error);
                 toast.error("Search Failed", {
                     description: `Error details: ${errorMessage}`,
@@ -91,7 +114,7 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
                 setBookFetchIsLoading(false);
             }
         },
-        [],
+        [clearResults],
     );
 
     const getBookByVolumeId = useCallback(
@@ -122,10 +145,12 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
 
     const value = {
         books,
+        numberOfPages,
         bookFetchIsLoading,
         volumeFetchIsLoading,
         fetchBooks,
         getBookByVolumeId,
+        clearResults,
     };
 
     return (
