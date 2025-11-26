@@ -11,6 +11,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import DebouncedInput from "@/pages/book-search/DebouncedInput";
 import { isStringEmpty } from "@/utils/common";
+import { SearchQuery } from "@/utils/types";
 import { Search } from "lucide-react";
 import {
     useCallback,
@@ -23,12 +24,17 @@ import { useSearchParams } from "react-router-dom";
 import ListPagination from "./ListPagination";
 
 const List = () => {
-    const { books, numberOfPages, bookFetchIsLoading, fetchBooks } =
+    const { books, maxNumberOfPages, bookFetchIsLoading, fetchBooks } =
         useBookSearch();
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const searchQuery = searchParams.get("q") ?? undefined;
+    const searchQuery = searchParams.get(SearchQuery.q) ?? undefined;
+
+    const currentPageNumber = useMemo(
+        () => parseInt(searchParams.get(SearchQuery.page) ?? "0"),
+        [searchParams],
+    );
 
     const [inputValue, setInputValue] = useState<string | undefined>(
         searchQuery,
@@ -41,7 +47,10 @@ const List = () => {
     }, [searchQuery]);
 
     const navigateToSearchQuery = useCallback(() => {
-        setSearchParams({ q: inputValue ?? "" });
+        setSearchParams({
+            [SearchQuery.q]: inputValue ?? "",
+            [SearchQuery.page]: "1",
+        });
     }, [inputValue, setSearchParams]);
 
     const handleKeyDown = useCallback(
@@ -54,8 +63,8 @@ const List = () => {
     );
 
     useEffect(() => {
-        fetchBooks(searchQuery ?? null);
-    }, [fetchBooks, searchQuery]);
+        fetchBooks(searchQuery ?? null, currentPageNumber);
+    }, [currentPageNumber, fetchBooks, searchQuery]);
 
     return (
         <div className="flex flex-col gap-10">
@@ -91,7 +100,7 @@ const List = () => {
                     ))}
                 </div>
             }
-            {numberOfPages > 0 && <ListPagination />}
+            {maxNumberOfPages > 0 && <ListPagination />}
         </div>
     );
 };

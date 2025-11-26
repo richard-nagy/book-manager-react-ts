@@ -32,3 +32,10 @@ export const Theme = {
 } as const;
 
 export type Theme = (typeof Theme)[keyof typeof Theme];
+
+export const SearchQuery = {
+    page: "page",
+    q: "q",
+} as const;
+
+export type SearchQuery = (typeof SearchQuery)[keyof typeof SearchQuery];

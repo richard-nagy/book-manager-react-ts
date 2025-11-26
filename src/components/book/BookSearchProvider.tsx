@@ -21,7 +21,7 @@ export interface BookSearchContextType {
      * Number of available pages.
      * If null, there are no results.
      */
-    numberOfPages: number;
+    maxNumberOfPages: number;
     /** If true, the fetching of the books is active. */
     bookFetchIsLoading: boolean;
     /** If true, the fetching of a volume is active. */
@@ -51,19 +51,16 @@ interface BookSearchProviderProps {
 
 export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
     const [books, setBooks] = useState<Volume[] | null>(null);
-    const [numberOfPages, setNumberOfPages] = useState<number>(0);
+    const [maxNumberOfPages, setMaxNumberOfPages] = useState<number>(0);
     const [bookFetchIsLoading, setBookFetchIsLoading] =
         useState<boolean>(false);
     const [volumeFetchIsLoading, setVolumeFetchIsLoading] =
         useState<boolean>(false);
 
-    const clearResults = useCallback(
-        () => {
-            setBooks(null);
-            setNumberOfPages(0);
-        },
-        [],
-    );
+    const clearResults = useCallback(() => {
+        setBooks(null);
+        setMaxNumberOfPages(0);
+    }, []);
 
     const fetchBooks = useCallback(
         async (searchQuery: string | null, startIndex = 0): Promise<void> => {
@@ -92,7 +89,9 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
                 const data: BookResponse = await response.json();
 
                 if (data.totalItems > 0) {
-                    setNumberOfPages(Math.floor(data.totalItems / maxResults));
+                    setMaxNumberOfPages(
+                        Math.floor(data.totalItems / maxResults),
+                    );
                 }
 
                 if (data.items && (data.items?.length ?? 0) > 0) {
@@ -145,7 +144,7 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
 
     const value = {
         books,
-        numberOfPages,
+        maxNumberOfPages,
         bookFetchIsLoading,
         volumeFetchIsLoading,
         fetchBooks,

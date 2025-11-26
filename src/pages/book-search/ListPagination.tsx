@@ -1,43 +1,52 @@
 import { useBookSearch } from "@/components/book/BookSearchContext";
 import {
     Pagination,
+    PaginationButton,
     PaginationContent,
     PaginationEllipsis,
     PaginationItem,
-    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
 } from "@/components/ui/pagination";
+import { SearchQuery } from "@/utils/types";
 import { useCallback, useMemo, type FC, type ReactElement } from "react";
-
-const pageNumber = 5;
+import { useSearchParams } from "react-router-dom";
 
 const ListPagination: FC = (): ReactElement => {
-    const { numberOfPages } = useBookSearch();
+    const { maxNumberOfPages } = useBookSearch();
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const currentPageNumber = useMemo(
+        () => parseInt(searchParams.get(SearchQuery.page) ?? "0"),
+        [searchParams],
+    );
+
+    const changePageNumber = useCallback(
+        (number: number) => {
+            const currentParams = Object.fromEntries(searchParams.entries());
+            const newParams = {
+                ...currentParams,
+                page: number.toString(),
+            };
+            setSearchParams(newParams);
+        },
+        [searchParams, setSearchParams],
+    );
 
     const paginationItem = useCallback(
         (number: number) =>
-            number <= 0 || number > numberOfPages ?
+            number <= 0 || number > maxNumberOfPages ?
                 null
             :   <PaginationItem>
-                    <PaginationLink
-                        to={number.toString()}
-                        isActive={pageNumber === number}
+                    <PaginationButton
+                        onClick={() => changePageNumber(number)}
+                        isActive={currentPageNumber === number}
                     >
                         {number}
-                    </PaginationLink>
+                    </PaginationButton>
                 </PaginationItem>,
-        [numberOfPages],
-    );
-
-    const paginationText = useCallback(
-        (text: string, toNumber: number) =>
-            pageNumber < numberOfPages ?
-                <PaginationItem>
-                    <PaginationLink to={toNumber.toString()}>
-                        {text}
-                    </PaginationLink>
-                </PaginationItem>
-            :   null,
-        [numberOfPages],
+        [changePageNumber, maxNumberOfPages, currentPageNumber],
     );
 
     const paginationEllipsis = useMemo(
@@ -51,17 +60,31 @@ const ListPagination: FC = (): ReactElement => {
 
     const pageNationItemsToRender = useMemo(() => {
         return [
-            paginationText("Prev", pageNumber + 1),
-            pageNumber - 2 > 1 ? paginationEllipsis : null,
-            paginationItem(pageNumber - 2),
-            paginationItem(pageNumber - 1),
-            paginationItem(pageNumber),
-            paginationItem(pageNumber + 1),
-            paginationItem(pageNumber + 2),
-            pageNumber + 2 < numberOfPages ? paginationEllipsis : null,
-            paginationText("Next", pageNumber - 1),
+            <PaginationPrevious
+                disabled={currentPageNumber > 1}
+                onClick={() => changePageNumber(currentPageNumber - 1)}
+            />,
+            currentPageNumber - 2 > 1 ? paginationEllipsis : null,
+            paginationItem(currentPageNumber - 2),
+            paginationItem(currentPageNumber - 1),
+            paginationItem(currentPageNumber),
+            paginationItem(currentPageNumber + 1),
+            paginationItem(currentPageNumber + 2),
+            currentPageNumber + 2 < maxNumberOfPages ?
+                paginationEllipsis
+            :   null,
+            <PaginationNext
+                disabled={currentPageNumber < maxNumberOfPages}
+                onClick={() => changePageNumber(currentPageNumber + 1)}
+            />,
         ];
-    }, [numberOfPages, paginationEllipsis, paginationItem, paginationText]);
+    }, [
+        changePageNumber,
+        maxNumberOfPages,
+        currentPageNumber,
+        paginationEllipsis,
+        paginationItem,
+    ]);
 
     return (
         <Pagination className="my-3">
