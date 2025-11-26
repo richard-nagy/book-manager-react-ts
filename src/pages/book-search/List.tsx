@@ -35,11 +35,11 @@ const List = () => {
 
     const handleKeyDown = useCallback(
         (event: KeyboardEvent<HTMLInputElement>) => {
-            if (event.key === "Enter" && searchQuery) {
+            if (event.key === "Enter" && inputValue) {
                 navigateToSearchQuery();
             }
         },
-        [navigateToSearchQuery, searchQuery],
+        [navigateToSearchQuery, inputValue],
     );
 
     useEffect(() => {
