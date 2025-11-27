@@ -1,14 +1,8 @@
-import Book from "@/components/Book";
+import EmptyView from "@/components/EmptyView";
 import { Button } from "@/components/ui/button";
-import {
-    Empty,
-    EmptyDescription,
-    EmptyHeader,
-    EmptyMedia,
-    EmptyTitle,
-} from "@/components/ui/empty";
 import { Spinner } from "@/components/ui/spinner";
 import { useBookSearch } from "@/context/BookSearchContext";
+import Book from "@/pages/book-search/Book";
 import DebouncedInput from "@/pages/book-search/DebouncedInput";
 import { isStringEmpty } from "@/utils/common";
 import { SearchQuery } from "@/utils/types";
@@ -83,28 +77,18 @@ const List = () => {
                 </Button>
             </div>
             {bookFetchIsLoading ?
-                <Empty className="w-full mt-10">
-                    <EmptyHeader>
-                        <EmptyMedia variant="icon">
-                            <Spinner />
-                        </EmptyMedia>
-                        <EmptyTitle>Searching for Books</EmptyTitle>
-                        <EmptyDescription>
-                            Please wait while we are searching for books.
-                        </EmptyDescription>
-                    </EmptyHeader>
-                </Empty>
-                : <div className="flex flex-wrap gap-6 mt-15 justify-center">
+                <EmptyView
+                    description="Please wait while we are searching for books."
+                    title="Searching for Books..."
+                    icon={<Spinner />}
+                />
+            :   <div className="flex flex-wrap gap-6 mt-15 justify-center">
                     {books && books.length <= 0 ?
-                        <Empty className="w-full mt-10">
-                            <EmptyHeader>
-                                <EmptyTitle>No results</EmptyTitle>
-                                <EmptyDescription>
-                                    No books were found.
-                                </EmptyDescription>
-                            </EmptyHeader>
-                        </Empty>
-                        : books?.map((b) => <Book key={b.id} book={b} />)}
+                        <EmptyView
+                            description="No books were found."
+                            title="No results..."
+                        />
+                    :   books?.map((b) => <Book key={b.id} book={b} />)}
                 </div>
             }
             {maxNumberOfPages > 0 && <ListPagination />}

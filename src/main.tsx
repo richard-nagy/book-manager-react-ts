@@ -8,6 +8,7 @@ import {
 import App from "./App";
 import "./index.css";
 import List from "./pages/book-search/List";
+import Book from "./pages/book/Book";
 import CustomErrorBoundary from "./pages/error/CustomErrorBoundary";
 import PageNotFound from "./pages/error/PageNotFound";
 
@@ -26,8 +27,8 @@ const router = createBrowserRouter([
                 element: <List />,
             },
             {
-                path: "book",
-                element: <>book</>,
+                path: "book/:id",
+                element: <Book />,
             },
             {
                 path: "*",

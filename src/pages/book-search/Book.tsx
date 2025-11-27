@@ -1,6 +1,7 @@
 import { TypographyMuted } from "@/components/ui/typography";
 import type { Volume } from "@/utils/types";
-import { type FC, type ReactElement } from "react";
+import { useCallback, type FC, type ReactElement } from "react";
+import { useNavigate } from "react-router-dom";
 
 type BookProps = {
     book: Volume;
@@ -8,8 +9,14 @@ type BookProps = {
 const Book: FC<BookProps> = (props: BookProps): ReactElement => {
     const { book } = props;
 
+    const navigate = useNavigate();
+
+    const navigateToBook = useCallback(() => {
+        navigate(`/book/${book.id}`, { relative: "route" });
+    }, [book.id, navigate]);
+
     return (
-        <div className="w-50">
+        <div className="w-50 cursor-pointer" onClick={navigateToBook}>
             <img
                 src={
                     book.volumeInfo?.imageLinks?.smallThumbnail ??
