@@ -3,7 +3,6 @@ import { useMemo, type FC, type ReactElement } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import SearchField from "./SearchField";
-import { SettingsDropDown } from "./SettingsDropdown";
 import { ThemeToggle } from "./ThemeToggle";
 
 const TopBar: FC = (): ReactElement => {
@@ -29,10 +28,7 @@ const TopBar: FC = (): ReactElement => {
                 </>
                 : <span />
             }
-            <div className="flex gap-2">
-                <ThemeToggle />
-                <SettingsDropDown />
-            </div>
+            <ThemeToggle />
         </div>
     );
 };
