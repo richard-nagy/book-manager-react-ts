@@ -1,6 +1,6 @@
 import type { BookResponse, Volume } from "@/lib/types";
 import { attemptFetch, isStringEmpty } from "@/lib/utils";
-import { useCallback, useState, type ReactNode } from "react";
+import { useCallback, useState, useTransition, type ReactNode } from "react";
 import { toast } from "sonner";
 import { BookSearchContext } from "./BookSearchContext";
 
@@ -22,8 +22,9 @@ const fetchBooksCore = async (
 ): Promise<BookResponse> => {
     const url = `${baseUrl}?q=${encodeURIComponent(
         searchQuery,
-    )}&key=${apiKey}&maxResults=${maxResults}&startIndex=${(startIndex - 1) * maxResults
-        }`;
+    )}&key=${apiKey}&maxResults=${maxResults}&startIndex=${
+        (startIndex - 1) * maxResults
+    }`;
 
     const response = await fetch(url);
 
@@ -65,9 +66,9 @@ export type BookSearchContextType = {
      */
     maxNumberOfPages: number;
     /** If true, the fetching of the books is active. */
-    bookFetchIsLoading: boolean;
+    bookFetchIsPending: boolean;
     /** If true, the fetching of a volume is active. */
-    volumeFetchIsLoading: boolean;
+    volumeFetchIsPending: boolean;
     /**
      * Fetches the books.
      * @param searchQuery The query filtering is based upon.
@@ -94,10 +95,8 @@ type BookSearchProviderProps = {
 export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
     const [books, setBooks] = useState<Volume[] | null>(null);
     const [maxNumberOfPages, setMaxNumberOfPages] = useState<number>(0);
-    const [bookFetchIsLoading, setBookFetchIsLoading] =
-        useState<boolean>(false);
-    const [volumeFetchIsLoading, setVolumeFetchIsLoading] =
-        useState<boolean>(false);
+    const [bookFetchIsPending, startBookFetch] = useTransition();
+    const [volumeFetchIsPending, startVolumeFetch] = useTransition();
 
     const clearResults = useCallback(() => {
         setBooks(null);
@@ -116,23 +115,23 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
                     return;
                 }
 
-                setBookFetchIsLoading(true);
-
-                const data = await attemptFetch(
-                    () => fetchBooksCore(searchQuery, startIndex, apiKey),
-                    maxRetries,
-                    delayMs,
-                );
-
-                if (data.totalItems > 0) {
-                    setMaxNumberOfPages(
-                        Math.floor(data.totalItems / maxResults),
+                startBookFetch(async () => {
+                    const data = await attemptFetch(
+                        () => fetchBooksCore(searchQuery, startIndex, apiKey),
+                        maxRetries,
+                        delayMs,
                     );
-                }
 
-                if (data.items && (data.items?.length ?? 0) > 0) {
-                    setBooks(data.items);
-                }
+                    if (data.totalItems > 0) {
+                        setMaxNumberOfPages(
+                            Math.floor(data.totalItems / maxResults),
+                        );
+                    }
+
+                    if (data.items && (data.items?.length ?? 0) > 0) {
+                        setBooks(data.items);
+                    }
+                });
             } catch (error) {
                 let errorMessage = "An unknown error occurred.";
                 if (error instanceof Error) {
@@ -144,8 +143,6 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
                 toast.error("Search Failed", {
                     description: `Error details: ${errorMessage}`,
                 });
-            } finally {
-                setBookFetchIsLoading(false);
             }
         },
         [clearResults],
@@ -155,22 +152,20 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
         async (volumeId: string): Promise<Volume | null> => {
             let result: Volume | null = null;
 
-            setVolumeFetchIsLoading(true);
-
             try {
-                if (!apiKey || !volumeId) {
-                    throw new Error("Missing API Key or Volume ID");
-                }
+                await startVolumeFetch(async () => {
+                    if (!apiKey || !volumeId) {
+                        throw new Error("Missing API Key or Volume ID");
+                    }
 
-                result = await attemptFetch(
-                    () => getBookByVolumeIdCore(volumeId, apiKey),
-                    maxRetries,
-                    delayMs,
-                );
+                    result = await attemptFetch(
+                        () => getBookByVolumeIdCore(volumeId, apiKey),
+                        maxRetries,
+                        delayMs,
+                    );
+                });
             } catch (error) {
                 console.error("Error fetching book data:", error);
-            } finally {
-                setVolumeFetchIsLoading(false);
             }
 
             return result;
@@ -181,8 +176,8 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
     const value = {
         books,
         maxNumberOfPages,
-        bookFetchIsLoading,
-        volumeFetchIsLoading,
+        bookFetchIsPending,
+        volumeFetchIsPending,
         fetchBooks,
         getBookByVolumeId,
         clearResults,

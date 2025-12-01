@@ -15,7 +15,7 @@ import { useParams } from "react-router-dom";
 
 const Book: FC = (): ReactElement => {
     const { id } = useParams();
-    const { volumeFetchIsLoading, getBookByVolumeId } = useBookSearch();
+    const { volumeFetchIsPending, getBookByVolumeId } = useBookSearch();
 
     const [volume, setVolume] = useState<Volume | null>(null);
 
@@ -27,7 +27,7 @@ const Book: FC = (): ReactElement => {
         }
     }, [getBookByVolumeId, id]);
 
-    if (volumeFetchIsLoading) {
+    if (volumeFetchIsPending) {
         return (
             <EmptyView
                 icon={<Spinner />}

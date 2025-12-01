@@ -5,11 +5,11 @@ import Book from "@/pages/list/Book";
 import ListPagination from "./ListPagination";
 
 const List = () => {
-    const { books, maxNumberOfPages, bookFetchIsLoading } = useBookSearch();
+    const { books, maxNumberOfPages, bookFetchIsPending } = useBookSearch();
 
     return (
         <div className="flex flex-col gap-10">
-            {bookFetchIsLoading ?
+            {bookFetchIsPending ?
                 <EmptyView
                     description="Please wait while we are searching for books."
                     title="Searching for Books..."
