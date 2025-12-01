@@ -7,10 +7,12 @@ import {
 } from "react-router-dom";
 import App from "./App";
 import "./index.css";
-import List from "./pages/list/List";
+import { Page } from "./lib/types";
 import Book from "./pages/book/Book";
 import CustomErrorBoundary from "./pages/error/CustomErrorBoundary";
 import PageNotFound from "./pages/error/PageNotFound";
+import Homepage from "./pages/homepage/Homepage";
+import List from "./pages/list/List";
 
 const router = createBrowserRouter([
     {
@@ -20,15 +22,19 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Navigate to="search" />,
+                element: <Navigate to={Page.homepage} />,
             },
             {
-                path: "search",
+                path: Page.search,
                 element: <List />,
             },
             {
-                path: "book/:id",
+                path: `${Page.book}/:id`,
                 element: <Book />,
+            },
+            {
+                path: Page.homepage,
+                element: <Homepage />,
             },
             {
                 path: "*",

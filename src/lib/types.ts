@@ -39,3 +39,20 @@ export const SearchQuery = {
 } as const;
 
 export type SearchQuery = (typeof SearchQuery)[keyof typeof SearchQuery];
+
+export const Page = {
+    search: "search",
+    book: "book",
+    homepage: "homepage",
+} as const;
+
+export type Page = (typeof Page)[keyof typeof Page];
+
+export const LogoSize = {
+    small: "small",
+    medium: "medium",
+    big: "big",
+    large: "large",
+} as const;
+
+export type LogoSize = (typeof LogoSize)[keyof typeof LogoSize];
