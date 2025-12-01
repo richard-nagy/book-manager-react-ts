@@ -1,9 +1,10 @@
+import Cover from "@/components/Cover";
 import EmptyView from "@/components/EmptyView";
 import { Spinner } from "@/components/ui/spinner";
 import {
-    TypographyH3,
+    TypographyH2,
     TypographyH4,
-    TypographyMuted,
+    TypographyMuted
 } from "@/components/ui/typography";
 import { useBookSearch } from "@/context/BookSearchContext";
 import type { Volume } from "@/utils/types";
@@ -48,13 +49,10 @@ const Book: FC = (): ReactElement => {
 
     return (
         <div className="flex justify-center gap-10">
-            <img
-                src={
-                    volume.volumeInfo?.imageLinks?.smallThumbnail ??
-                    "https://images.unsplash.com/photo-1610280777472-54133d004c8c?q=80&w=640&auto=format&fit=crop"
-                }
+            <Cover
                 alt={volume.id + "img"}
                 className="w-50 object-cover mb-2"
+                src={volume.volumeInfo?.imageLinks?.smallThumbnail}
             />
             <div className="max-w-200 flex-column">
                 {(volume.volumeInfo?.authors?.length ?? 0) > 0 ?
@@ -66,16 +64,22 @@ const Book: FC = (): ReactElement => {
                                 ","}
                         </TypographyH4>
                     ))
-                :   <TypographyH4 className="italic">
+                    : <TypographyH4 className="italic">
                         � Unknown author(s)
                     </TypographyH4>
                 }
-                <div className="gap-2 mt-2 flex items-center">
-                    <TypographyH3>
+                <div className="gap-2 mt-1 flex items-center">
+                    <TypographyH2>
                         {volume.volumeInfo?.title}
-                        {volume.volumeInfo?.language &&
-                            ` (${volume.volumeInfo?.language?.toLocaleLowerCase()})`}
-                    </TypographyH3>
+                        {volume.volumeInfo?.language && (
+                            <span className="text-muted-foreground">
+                                {" "}
+                                (
+                                {volume.volumeInfo?.language?.toLocaleLowerCase()}
+                                )
+                            </span>
+                        )}
+                    </TypographyH2>
                     <Star className="text-primary fill-primary ml-3" />
                     <b>{volume.volumeInfo?.averageRating ?? 0}</b>
                     <TypographyMuted>
@@ -95,7 +99,7 @@ const Book: FC = (): ReactElement => {
                 <div className="mt-5">
                     {volume.volumeInfo?.description ?
                         parse(volume.volumeInfo?.description)
-                    :   ""}
+                        : ""}
                 </div>
             </div>
         </div>

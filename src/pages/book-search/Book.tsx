@@ -1,3 +1,4 @@
+import Cover from "@/components/Cover";
 import { TypographyMuted } from "@/components/ui/typography";
 import type { Volume } from "@/utils/types";
 import { useCallback, type FC, type ReactElement } from "react";
@@ -17,19 +18,16 @@ const Book: FC<BookProps> = (props: BookProps): ReactElement => {
 
     return (
         <div className="w-50 cursor-pointer" onClick={navigateToBook}>
-            <img
-                src={
-                    book.volumeInfo?.imageLinks?.smallThumbnail ??
-                    "https://images.unsplash.com/photo-1610280777472-54133d004c8c?q=80&w=640&auto=format&fit=crop"
-                }
-                alt={book.id + "img"}
-                className="w-50 object-cover mb-2"
+            <Cover
+                className="mb-2"
+                src={book.volumeInfo?.imageLinks?.smallThumbnail}
+                alt={book.id + "-img"}
             />
             {(book.volumeInfo?.authors?.length ?? 0) > 0 ?
                 book.volumeInfo?.authors?.map((a, i) => (
                     <TypographyMuted>
                         {a}
-                        {i + 1 !== (book.volumeInfo?.authors.length ?? 0) &&
+                        {i + 1 !== (book.volumeInfo?.authors?.length ?? 0) &&
                             ","}
                     </TypographyMuted>
                 ))
