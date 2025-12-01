@@ -1,5 +1,4 @@
 import { useBookSearch } from "@/context/BookSearchContext";
-import DebouncedInput from "@/pages/list/DebouncedInput";
 import { isStringEmpty } from "@/utils/common";
 import { SearchQuery } from "@/utils/types";
 import { ArrowLeft, HomeIcon, Search } from "lucide-react";
@@ -10,28 +9,29 @@ import {
     useState,
     type FC,
     type KeyboardEvent,
-    type ReactElement,
+    type ReactElement
 } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { SettingsDropDown } from "./SettingsDropdown";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+
+const firstPageNumber = "1";
 
 const TopBar: FC = (): ReactElement => {
     const [searchParams, setSearchParams] = useSearchParams();
     const { fetchBooks } = useBookSearch();
     const navigate = useNavigate();
 
-    const searchQuery = searchParams.get(SearchQuery.q) ?? undefined;
+    const searchQuery = searchParams.get(SearchQuery.q) ?? "";
 
-    const [inputValue, setInputValue] = useState<string | undefined>(
-        searchQuery,
-    );
+    const [inputValue, setInputValue] = useState<string>(searchQuery);
 
     const canGoBack = (history.state?.idx ?? 0) > 0;
 
     const currentPageNumber = useMemo(
-        () => parseInt(searchParams.get(SearchQuery.page) ?? "1"),
+        () => parseInt(searchParams.get(SearchQuery.page) ?? firstPageNumber),
         [searchParams],
     );
 
@@ -40,7 +40,7 @@ const TopBar: FC = (): ReactElement => {
     const navigateToSearchQuery = useCallback(() => {
         setSearchParams({
             [SearchQuery.q]: inputValue ?? "",
-            [SearchQuery.page]: "1",
+            [SearchQuery.page]: firstPageNumber,
         });
     }, [inputValue, setSearchParams]);
 
@@ -58,7 +58,7 @@ const TopBar: FC = (): ReactElement => {
     }, [searchQuery]);
 
     useEffect(() => {
-        fetchBooks(searchQuery ?? null, currentPageNumber);
+        fetchBooks(searchQuery, currentPageNumber);
     }, [currentPageNumber, fetchBooks, searchQuery]);
 
     return (
@@ -77,12 +77,13 @@ const TopBar: FC = (): ReactElement => {
                         <HomeIcon />
                     </Link>
                 </Button>
-                <DebouncedInput
+                <Input
                     className="w-75"
-                    autoFocus={true}
-                    defaultValue={inputValue}
-                    onChange={setInputValue}
-                    handleKeyDown={handleKeyDown}
+                    type="text"
+                    value={inputValue}
+                    autoFocus
+                    onKeyDown={handleKeyDown}
+                    onChange={(e) => setInputValue(e.target.value)}
                 />
                 <Button disabled={isInputEmpty} onClick={navigateToSearchQuery}>
                     <Search /> Search
