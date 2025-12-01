@@ -7,7 +7,7 @@ import {
     TypographyMuted,
 } from "@/components/ui/typography";
 import { useBookSearch } from "@/context/BookSearchContext";
-import type { Volume } from "@/utils/types";
+import type { Volume } from "@/lib/types";
 import parse from "html-react-parser";
 import { CircleQuestionMark, Star } from "lucide-react";
 import { useEffect, useState, type FC, type ReactElement } from "react";

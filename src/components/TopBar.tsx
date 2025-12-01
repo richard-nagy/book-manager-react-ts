@@ -1,6 +1,6 @@
 import { useBookSearch } from "@/context/BookSearchContext";
-import { isStringEmpty } from "@/utils/common";
-import { SearchQuery } from "@/utils/types";
+import { SearchQuery } from "@/lib/types";
+import { isStringEmpty } from "@/lib/utils";
 import { ArrowLeft, HomeIcon, Search } from "lucide-react";
 import {
     useCallback,

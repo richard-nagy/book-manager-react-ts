@@ -8,7 +8,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination";
-import { SearchQuery } from "@/utils/types";
+import { SearchQuery } from "@/lib/types";
 import { useCallback, useMemo, type FC, type ReactElement } from "react";
 import { useSearchParams } from "react-router-dom";
 

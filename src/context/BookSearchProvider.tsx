@@ -1,5 +1,5 @@
-import { attemptFetch, isStringEmpty } from "@/utils/common";
-import type { BookResponse, Volume } from "@/utils/types";
+import type { BookResponse, Volume } from "@/lib/types";
+import { attemptFetch, isStringEmpty } from "@/lib/utils";
 import { useCallback, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { BookSearchContext } from "./BookSearchContext";
@@ -22,9 +22,8 @@ const fetchBooksCore = async (
 ): Promise<BookResponse> => {
     const url = `${baseUrl}?q=${encodeURIComponent(
         searchQuery,
-    )}&key=${apiKey}&maxResults=${maxResults}&startIndex=${
-        (startIndex - 1) * maxResults
-    }`;
+    )}&key=${apiKey}&maxResults=${maxResults}&startIndex=${(startIndex - 1) * maxResults
+        }`;
 
     const response = await fetch(url);
 

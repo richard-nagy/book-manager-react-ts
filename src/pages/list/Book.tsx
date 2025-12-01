@@ -1,6 +1,6 @@
 import Cover from "@/components/Cover";
 import { TypographyMuted } from "@/components/ui/typography";
-import type { Volume } from "@/utils/types";
+import type { Volume } from "@/lib/types";
 import { useCallback, type FC, type ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 
