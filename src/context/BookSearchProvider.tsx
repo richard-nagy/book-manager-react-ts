@@ -59,7 +59,7 @@ export type BookSearchContextType = {
      * List of books.
      * If null, there are no results.
      */
-    books: Volume[] | null;
+    booksByPage: Map<number, Volume[]> | null;
     /**
      * Number of available pages.
      * If null, there are no results.
@@ -92,19 +92,33 @@ type BookSearchProviderProps = {
     children: ReactNode;
 };
 
+// todo: change this name to BookProvider
+// done: of successful book fetch, stash the search query as well, if we step back from the book result instead of reloading the results just give us the results on an instant
+// done: if the search query didn't changed and the user steps back in the pagination, don't re-fetch the results just give back the already existing one
+// done: on search query change, remove the stashed results
+// todo: save all the results with query and page number in the current session
+// todo: add a clear stashed results button (somewhere)
 export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
-    const [books, setBooks] = useState<Volume[] | null>(null);
+    const [currentSearchQuery, setCurrentSearchQuery] = useState<string | null>(
+        null,
+    );
+    const [booksByPage, setBooksByPage] = useState<Map<
+        number,
+        Volume[]
+    > | null>(null);
     const [maxNumberOfPages, setMaxNumberOfPages] = useState<number>(0);
     const [bookFetchIsPending, startBookFetch] = useTransition();
     const [volumeFetchIsPending, startVolumeFetch] = useTransition();
 
     const clearResults = useCallback(() => {
-        setBooks(null);
+        setBooksByPage(null);
         setMaxNumberOfPages(0);
     }, []);
 
     const fetchBooks = useCallback(
-        async (searchQuery: string | null, startIndex = 0): Promise<void> => {
+        async (searchQuery: string | null, pageNumber = 0): Promise<void> => {
+            const sameSearchQuery = currentSearchQuery !== searchQuery;
+
             try {
                 if (!apiKey) {
                     throw new Error("Missing API Key");
@@ -115,9 +129,18 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
                     return;
                 }
 
+                // If it's the same search query and we already got the books for the page, don't repeat the fetch.
+                if (
+                    currentSearchQuery?.toLocaleLowerCase() ===
+                        searchQuery?.toLocaleLowerCase() &&
+                    booksByPage?.has(pageNumber)
+                ) {
+                    return;
+                }
+
                 startBookFetch(async () => {
                     const data = await attemptFetch(
-                        () => fetchBooksCore(searchQuery, startIndex, apiKey),
+                        () => fetchBooksCore(searchQuery, pageNumber, apiKey),
                         maxRetries,
                         delayMs,
                     );
@@ -129,7 +152,15 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
                     }
 
                     if (data.items && (data.items?.length ?? 0) > 0) {
-                        setBooks(data.items);
+                        setBooksByPage((ob) => {
+                            const newBooks = new Map(
+                                // If we have the same search query, we keep the previous results,
+                                // otherwise we clear it out.
+                                sameSearchQuery ? [...(ob ?? [])] : [],
+                            );
+                            newBooks.set(pageNumber, data.items ?? []);
+                            return newBooks;
+                        });
                     }
                 });
             } catch (error) {
@@ -143,9 +174,13 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
                 toast.error("Search Failed", {
                     description: `Error details: ${errorMessage}`,
                 });
+            } finally {
+                if (sameSearchQuery) {
+                    setCurrentSearchQuery(searchQuery);
+                }
             }
         },
-        [clearResults],
+        [booksByPage, clearResults, currentSearchQuery],
     );
 
     const getBookByVolumeId = useCallback(
@@ -174,7 +209,7 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
     );
 
     const value = {
-        books,
+        booksByPage,
         maxNumberOfPages,
         bookFetchIsPending,
         volumeFetchIsPending,

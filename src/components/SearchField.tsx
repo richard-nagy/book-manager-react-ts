@@ -1,5 +1,5 @@
 import { useBookSearch } from "@/context/BookSearchContext";
-import { SearchQuery } from "@/lib/types";
+import { Page, SearchQuery } from "@/lib/types";
 import { isStringEmpty } from "@/lib/utils";
 import { ArrowLeft, Search } from "lucide-react";
 import {
@@ -36,7 +36,12 @@ const SearchField: FC<SearchInputProps> = ({ showBackButton }) => {
     );
 
     useEffect(() => {
-        fetchBooks(searchQuery, currentPageNumber);
+        if (
+            location.pathname === `/${Page.homepage}` ||
+            location.pathname === `/${Page.search}`
+        ) {
+            fetchBooks(searchQuery, currentPageNumber);
+        }
     }, [currentPageNumber, fetchBooks, searchQuery]);
 
     const isInputEmpty = useMemo(() => isStringEmpty(inputValue), [inputValue]);
