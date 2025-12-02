@@ -12,14 +12,14 @@ type EmptyViewProps = {
     description: string;
     icon?: JSX.Element;
 };
-const EmptyView: FC<EmptyViewProps> = ({ icon }): ReactElement => {
+const EmptyView: FC<EmptyViewProps> = ({ icon, title, description }): ReactElement => {
     return (
         <Empty className="w-full mt-10">
             <EmptyHeader>
                 {icon && <EmptyMedia variant="icon">{icon}</EmptyMedia>}
-                <EmptyTitle>Loading Book</EmptyTitle>
+                <EmptyTitle>{title}</EmptyTitle>
                 <EmptyDescription>
-                    Please wait while we are loading the Book.
+                    {description}
                 </EmptyDescription>
             </EmptyHeader>
         </Empty>
