@@ -27,7 +27,11 @@ const Logo: FC<LogoProps> = ({
     const logo = <BookFinder size={getLogoSize(size)} />;
 
     if (iconOnly) {
-        return logo;
+        return (
+            <div className={className} onClick={onClick}>
+                {logo}
+            </div>
+        );
     }
 
     switch (size) {

@@ -72,44 +72,46 @@ const SearchField: FC<SearchInputProps> = ({
         setInputValue(searchQuery);
     }, [searchQuery]);
 
-    if (isMobile && isDialogViewAllowed) {
-        return (
-            <SearchFieldDialog
-                handleKeyDown={handleKeyDown}
-                inputValue={inputValue}
-                isInputEmpty={isInputEmpty}
-                navigateToSearchQuery={navigateToSearchQuery}
-                setInputValue={setInputValue}
-            />
-        );
-    }
+    const backButton =
+        showBackButton ?
+            <Button
+                size="icon"
+                disabled={!canGoBack}
+                onClick={() => navigate(-1)}
+            >
+                <ArrowLeft />
+            </Button>
+        :   null;
 
     return (
         <div className="flex flex-row gap-2 justify-center align-middle">
-            {showBackButton && (
-                <Button
-                    size="icon"
-                    disabled={!canGoBack}
-                    onClick={() => navigate(-1)}
-                >
-                    <ArrowLeft />
-                </Button>
-            )}
-            <Input
-                className="w-75"
-                type="text"
-                value={inputValue}
-                autoFocus
-                onKeyDown={handleKeyDown}
-                onChange={(e) => setInputValue(e.target.value)}
-            />
-            <Button
-                size="icon"
-                disabled={isInputEmpty}
-                onClick={navigateToSearchQuery}
-            >
-                <Search />
-            </Button>
+            {backButton}
+            {isMobile && isDialogViewAllowed ?
+                <SearchFieldDialog
+                    handleKeyDown={handleKeyDown}
+                    inputValue={inputValue}
+                    isInputEmpty={isInputEmpty}
+                    navigateToSearchQuery={navigateToSearchQuery}
+                    setInputValue={setInputValue}
+                />
+            :   <>
+                    <Input
+                        className="w-75"
+                        type="text"
+                        value={inputValue}
+                        autoFocus
+                        onKeyDown={handleKeyDown}
+                        onChange={(e) => setInputValue(e.target.value)}
+                    />
+                    <Button
+                        size="icon"
+                        disabled={isInputEmpty}
+                        onClick={navigateToSearchQuery}
+                    >
+                        <Search />
+                    </Button>
+                </>
+            }
         </div>
     );
 };

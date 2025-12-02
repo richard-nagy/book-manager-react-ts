@@ -50,7 +50,9 @@ const Book: FC = (): ReactElement => {
     }
 
     return (
-        <div className={`flex items-start justify-center gap-10 ${isMobile && "flex-col"}`}>
+        <div
+            className={`flex items-start justify-center gap-10 ${isMobile && "flex-col"}`}
+        >
             <Cover
                 alt={volume.id + "img"}
                 className="object-cover mb-2"
@@ -66,7 +68,7 @@ const Book: FC = (): ReactElement => {
                                 ","}
                         </TypographyH4>
                     ))
-                    : <TypographyH4 className="italic">
+                :   <TypographyH4 className="italic">
                         � Unknown author(s)
                     </TypographyH4>
                 }
@@ -101,7 +103,7 @@ const Book: FC = (): ReactElement => {
                 <div className="mt-5">
                     {volume.volumeInfo?.description ?
                         parse(volume.volumeInfo?.description)
-                        : ""}
+                    :   ""}
                 </div>
             </div>
         </div>

@@ -28,7 +28,7 @@ const TopBar: FC = (): ReactElement => {
                     />
                     <SearchField showBackButton isDialogViewAllowed />
                 </>
-                : <span />}
+            :   <span />}
             <div className={`flex justify-end ${!isMobile && "w-38"}`}>
                 <ThemeToggle />
             </div>

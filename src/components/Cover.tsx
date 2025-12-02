@@ -36,7 +36,7 @@ const Cover: FC<CoverProps> = ({
                     alt={alt}
                     className="object-contain w-full h-full"
                 />
-                : <CircleQuestionMark className="text-muted-foreground" />}
+            :   <CircleQuestionMark className="text-muted-foreground" />}
         </div>
     );
 };

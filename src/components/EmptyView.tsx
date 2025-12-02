@@ -12,15 +12,17 @@ type EmptyViewProps = {
     description: string;
     icon?: JSX.Element;
 };
-const EmptyView: FC<EmptyViewProps> = ({ icon, title, description }): ReactElement => {
+const EmptyView: FC<EmptyViewProps> = ({
+    icon,
+    title,
+    description,
+}): ReactElement => {
     return (
         <Empty className="w-full mt-10">
             <EmptyHeader>
                 {icon && <EmptyMedia variant="icon">{icon}</EmptyMedia>}
                 <EmptyTitle>{title}</EmptyTitle>
-                <EmptyDescription>
-                    {description}
-                </EmptyDescription>
+                <EmptyDescription>{description}</EmptyDescription>
             </EmptyHeader>
         </Empty>
     );

@@ -8,7 +8,8 @@ import { useSearchParams } from "react-router-dom";
 import ListPagination from "./ListPagination";
 
 const List = () => {
-    const { booksByPage, maxNumberOfPages, bookFetchIsPending } = useBookSearch();
+    const { booksByPage, maxNumberOfPages, bookFetchIsPending } =
+        useBookSearch();
 
     const [searchParams] = useSearchParams();
 
