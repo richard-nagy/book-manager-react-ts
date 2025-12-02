@@ -6,7 +6,7 @@ import type { FC, ReactElement } from "react";
 const Homepage: FC = (): ReactElement => {
     return <div className="w-full h-full flex flex-col items-center justify-center gap-4">
         <Logo size={LogoSize.large} />
-        <SearchField showBackButton={false} />
+        <SearchField />
     </div>
 }
 

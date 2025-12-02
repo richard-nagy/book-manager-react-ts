@@ -1,4 +1,5 @@
 import { useBookSearch } from "@/context/BookSearchContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Page, SearchQuery } from "@/lib/types";
 import { isStringEmpty } from "@/lib/utils";
 import { ArrowLeft, Search } from "lucide-react";
@@ -11,15 +12,21 @@ import {
     type KeyboardEvent,
 } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import SearchFieldDialog from "./SearchFieldDialog";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
 const firstPageNumber = "1";
 
 type SearchInputProps = {
-    showBackButton: boolean;
+    showBackButton?: boolean;
+    isDialogViewAllowed?: boolean;
 };
-const SearchField: FC<SearchInputProps> = ({ showBackButton }) => {
+const SearchField: FC<SearchInputProps> = ({
+    showBackButton,
+    isDialogViewAllowed,
+}) => {
+    const isMobile = useIsMobile();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const { fetchBooks } = useBookSearch();
@@ -64,6 +71,18 @@ const SearchField: FC<SearchInputProps> = ({ showBackButton }) => {
     useEffect(() => {
         setInputValue(searchQuery);
     }, [searchQuery]);
+
+    if (isMobile && isDialogViewAllowed) {
+        return (
+            <SearchFieldDialog
+                handleKeyDown={handleKeyDown}
+                inputValue={inputValue}
+                isInputEmpty={isInputEmpty}
+                navigateToSearchQuery={navigateToSearchQuery}
+                setInputValue={setInputValue}
+            />
+        );
+    }
 
     return (
         <div className="flex flex-row gap-2 justify-center align-middle">

@@ -7,7 +7,6 @@ import { ThemeToggle } from "./ThemeToggle";
 
 const TopBar: FC = (): ReactElement => {
     const navigate = useNavigate();
-
     const location = useLocation();
 
     const isHomePage = useMemo(
@@ -17,17 +16,16 @@ const TopBar: FC = (): ReactElement => {
 
     return (
         <div className="flex justify-between w-full sticky top-0 p-3">
-            {!isHomePage
-                ? <>
+            {!isHomePage ?
+                <>
                     <Logo
                         size={LogoSize.medium}
                         className="cursor-pointer"
                         onClick={() => navigate(Page.homepage)}
                     />
-                    <SearchField showBackButton />
+                    <SearchField showBackButton isDialogViewAllowed />
                 </>
-                : <span />
-            }
+                : <span />}
             <div className="w-38 flex justify-end">
                 <ThemeToggle />
             </div>
