@@ -23,12 +23,18 @@ const Cover: FC<CoverProps> = ({
 }): ReactElement => {
     const isMobile = useIsMobile();
 
-    const calculatedWidth = width ?? (isMobile ? 20 : 50);
-    const calculatedHeight = height ?? (isMobile ? 30 : 75);
+    const calculatedWidth =
+        width !== undefined ? width
+        : isMobile ? 30
+        : 50;
+    const calculatedHeight =
+        height !== undefined ? height
+        : isMobile ? 45
+        : 75;
 
     return (
         <div
-            className={`bg-background max-w-${calculatedWidth} w-${calculatedWidth} max-h-${calculatedHeight} h-${calculatedHeight} flex justify-center items-center shrink-0 ${className ?? ""}`}
+            className={`bg-background w-${calculatedWidth} h-${calculatedHeight} flex justify-center items-center shrink-0 ${className ?? ""}`}
         >
             {src ?
                 <img

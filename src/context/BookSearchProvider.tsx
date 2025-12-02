@@ -71,6 +71,8 @@ export type BookSearchContextType = {
     bookFetchIsPending: boolean;
     /** If true, the fetching of a volume is active. */
     volumeFetchIsPending: boolean;
+    /** Returns the current search query */
+    currentSearchQuery: string | null;
     /**
      * Fetches the books.
      * @param searchQuery The query filtering is based upon.
@@ -94,7 +96,6 @@ type BookSearchProviderProps = {
 };
 
 // todo: change this name to BookProvider
-// todo: also save the opened volumes into a map based on
 export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
     const [currentSearchQuery, setCurrentSearchQuery] = useState<string | null>(
         null,
@@ -228,6 +229,7 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
         bookFetchIsPending,
         volumeFetchIsPending,
         volumeMap,
+        currentSearchQuery,
         fetchBooks,
         fetchVolume,
         clearResults,

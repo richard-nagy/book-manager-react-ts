@@ -18,7 +18,7 @@ const Book: FC<BookProps> = ({ book }): ReactElement => {
 
     return (
         <div
-            className={`w-${isMobile ? 40 : 50} cursor-pointer`}
+            className={`w-${isMobile ? 40 : 60} cursor-pointer`}
             onClick={navigateToBook}
         >
             <Cover
@@ -34,7 +34,7 @@ const Book: FC<BookProps> = ({ book }): ReactElement => {
                             ","}
                     </TypographyMuted>
                 ))
-            :   <TypographyMuted className="italic">
+                : <TypographyMuted className="italic">
                     � Unknown author(s)
                 </TypographyMuted>
             }

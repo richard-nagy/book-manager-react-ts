@@ -29,9 +29,10 @@ const SearchField: FC<SearchInputProps> = ({
     const isMobile = useIsMobile();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const { fetchBooks } = useBookSearch();
+    const { currentSearchQuery, fetchBooks } = useBookSearch();
 
-    const searchQuery = searchParams.get(SearchQuery.q) ?? "";
+    const searchQuery =
+        searchParams.get(SearchQuery.q) ?? currentSearchQuery ?? "";
 
     const [inputValue, setInputValue] = useState<string>(searchQuery);
 
@@ -62,15 +63,19 @@ const SearchField: FC<SearchInputProps> = ({
     const onBackButtonClick = useCallback(() => {
         if (location.pathname === `/${Page.search}`) {
             navigate(Page.homepage);
-        } else if (location.pathname === `/${Page.book}`) {
-            navigate(-1);
+        } else if (location.pathname.includes(`/${Page.book}`)) {
+            if (!isStringEmpty(searchQuery)) {
+                navigate(-1);
+            } else {
+                navigate(Page.homepage);
+            }
         }
-    }, [navigate]);
+    }, [navigate, searchQuery]);
 
     useEffect(() => {
+        console.log(searchQuery);
         setInputValue(searchQuery);
     }, [searchQuery]);
-
 
     useEffect(() => {
         if (
