@@ -12,9 +12,7 @@ type EmptyViewProps = {
     description: string;
     icon?: JSX.Element;
 };
-const EmptyView: FC<EmptyViewProps> = (props: EmptyViewProps): ReactElement => {
-    const { icon } = props;
-
+const EmptyView: FC<EmptyViewProps> = ({ icon }): ReactElement => {
     return (
         <Empty className="w-full mt-10">
             <EmptyHeader>

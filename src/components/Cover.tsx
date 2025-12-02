@@ -13,9 +13,13 @@ type CoverProps = {
     /** ClassName for the Cover Container element. */
     className?: string;
 };
-const Cover: FC<CoverProps> = (props: CoverProps): ReactElement => {
-    const { src, alt, className, height, width } = props;
-
+const Cover: FC<CoverProps> = ({
+    src,
+    alt,
+    className,
+    height,
+    width,
+}): ReactElement => {
     return (
         <div
             className={`bg-background w-${width ?? 50} h-${height ?? 75} flex justify-center items-center ${className ?? ""}`}

@@ -19,9 +19,7 @@ const firstPageNumber = "1";
 type SearchInputProps = {
     showBackButton: boolean;
 };
-const SearchField: FC<SearchInputProps> = (props: SearchInputProps) => {
-    const { showBackButton } = props;
-
+const SearchField: FC<SearchInputProps> = ({ showBackButton }) => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const { fetchBooks } = useBookSearch();
@@ -81,7 +79,11 @@ const SearchField: FC<SearchInputProps> = (props: SearchInputProps) => {
                 onKeyDown={handleKeyDown}
                 onChange={(e) => setInputValue(e.target.value)}
             />
-            <Button size="icon" disabled={isInputEmpty} onClick={navigateToSearchQuery}>
+            <Button
+                size="icon"
+                disabled={isInputEmpty}
+                onClick={navigateToSearchQuery}
+            >
                 <Search />
             </Button>
         </div>

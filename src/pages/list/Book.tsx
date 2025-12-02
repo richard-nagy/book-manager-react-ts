@@ -7,9 +7,7 @@ import { useNavigate } from "react-router-dom";
 type BookProps = {
     book: Volume;
 };
-const Book: FC<BookProps> = (props: BookProps): ReactElement => {
-    const { book } = props;
-
+const Book: FC<BookProps> = ({ book }): ReactElement => {
     const navigate = useNavigate();
 
     const navigateToBook = useCallback(() => {

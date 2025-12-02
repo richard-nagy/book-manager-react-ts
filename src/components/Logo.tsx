@@ -11,36 +11,29 @@ type LogoProps = {
     /** Optional on click method for the logo. */
     onClick?: () => void;
 };
-const Logo: FC<LogoProps> = (props: LogoProps): ReactElement | null => {
-    const { size, className: classNameProp, onClick } = props;
-
+const Logo: FC<LogoProps> = ({
+    size,
+    className: classNameProp,
+    onClick,
+}): ReactElement | null => {
     const className = `flex items-center gap-1 ${classNameProp}`;
 
     switch (size) {
         case LogoSize.large:
             return (
-                <TypographyH2
-                    className={className}
-                    onClick={onClick}
-                >
+                <TypographyH2 className={className} onClick={onClick}>
                     <BookFinder size={30} /> Book Finder
                 </TypographyH2>
             );
         case LogoSize.medium:
             return (
-                <TypographyH3
-                    className={className}
-                    onClick={onClick}
-                >
+                <TypographyH3 className={className} onClick={onClick}>
                     <BookFinder size={24} /> Book Finder
                 </TypographyH3>
             );
         case LogoSize.small:
             return (
-                <TypographyH4
-                    className={className}
-                    onClick={onClick}
-                >
+                <TypographyH4 className={className} onClick={onClick}>
                     <BookFinder size={20} /> Book Finder
                 </TypographyH4>
             );
