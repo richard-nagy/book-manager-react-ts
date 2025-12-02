@@ -1,5 +1,6 @@
 import Cover from "@/components/Cover";
 import { TypographyMuted } from "@/components/ui/typography";
+import { useIsMobile } from "@/hooks/use-mobile";
 import type { Volume } from "@/lib/types";
 import { useCallback, type FC, type ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,13 +10,17 @@ type BookProps = {
 };
 const Book: FC<BookProps> = ({ book }): ReactElement => {
     const navigate = useNavigate();
+    const isMobile = useIsMobile();
 
     const navigateToBook = useCallback(() => {
         navigate(`/book/${book.id}`, { relative: "route" });
     }, [book.id, navigate]);
 
     return (
-        <div className="w-50 cursor-pointer" onClick={navigateToBook}>
+        <div
+            className={`w-${isMobile ? 40 : 50} cursor-pointer`}
+            onClick={navigateToBook}
+        >
             <Cover
                 className="mb-2"
                 src={book.volumeInfo?.imageLinks?.smallThumbnail}

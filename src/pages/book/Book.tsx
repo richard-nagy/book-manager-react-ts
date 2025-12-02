@@ -7,6 +7,7 @@ import {
     TypographyMuted,
 } from "@/components/ui/typography";
 import { useBookSearch } from "@/context/BookSearchContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 import parse from "html-react-parser";
 import { CircleQuestionMark, Star } from "lucide-react";
 import { useEffect, useMemo, type FC, type ReactElement } from "react";
@@ -15,6 +16,7 @@ import { useParams } from "react-router-dom";
 const Book: FC = (): ReactElement => {
     const { id } = useParams();
     const { volumeFetchIsPending, volumeMap, fetchVolume } = useBookSearch();
+    const isMobile = useIsMobile();
 
     const volume = useMemo(
         () => (id ? (volumeMap?.get(id) ?? null) : null),
@@ -48,13 +50,13 @@ const Book: FC = (): ReactElement => {
     }
 
     return (
-        <div className="flex justify-center gap-10">
+        <div className={`flex items-start justify-center gap-10 ${isMobile && "flex-col"}`}>
             <Cover
                 alt={volume.id + "img"}
                 className="object-cover mb-2"
                 src={volume.volumeInfo?.imageLinks?.smallThumbnail}
             />
-            <div className="max-w-200 flex-column">
+            <div className="max-w-200 flex-column shrink">
                 {(volume.volumeInfo?.authors?.length ?? 0) > 0 ?
                     volume.volumeInfo?.authors?.map((a, i) => (
                         <TypographyH4 className="text-secondary-foreground">
@@ -64,7 +66,7 @@ const Book: FC = (): ReactElement => {
                                 ","}
                         </TypographyH4>
                     ))
-                :   <TypographyH4 className="italic">
+                    : <TypographyH4 className="italic">
                         � Unknown author(s)
                     </TypographyH4>
                 }
@@ -99,7 +101,7 @@ const Book: FC = (): ReactElement => {
                 <div className="mt-5">
                     {volume.volumeInfo?.description ?
                         parse(volume.volumeInfo?.description)
-                    :   ""}
+                        : ""}
                 </div>
             </div>
         </div>

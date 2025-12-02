@@ -1,3 +1,4 @@
+import { useIsMobile } from "@/hooks/use-mobile";
 import { CircleQuestionMark } from "lucide-react";
 import type { FC, ReactElement } from "react";
 
@@ -20,9 +21,14 @@ const Cover: FC<CoverProps> = ({
     height,
     width,
 }): ReactElement => {
+    const isMobile = useIsMobile();
+
+    const calculatedWidth = width ?? (isMobile ? 20 : 50);
+    const calculatedHeight = height ?? (isMobile ? 30 : 75);
+
     return (
         <div
-            className={`bg-background w-${width ?? 50} h-${height ?? 75} flex justify-center items-center ${className ?? ""}`}
+            className={`bg-background max-w-${calculatedWidth} w-${calculatedWidth} max-h-${calculatedHeight} h-${calculatedHeight} flex justify-center items-center shrink-0 ${className ?? ""}`}
         >
             {src ?
                 <img
@@ -30,7 +36,7 @@ const Cover: FC<CoverProps> = ({
                     alt={alt}
                     className="object-contain w-full h-full"
                 />
-            :   <CircleQuestionMark className="text-muted-foreground" />}
+                : <CircleQuestionMark className="text-muted-foreground" />}
         </div>
     );
 };
