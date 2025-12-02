@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { LogoSize } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -42,4 +43,16 @@ export async function attemptFetch<T>(
     }
 
     throw new Error("Failed after all retries.");
+}
+
+export function getLogoSize(size: LogoSize) {
+    switch (size) {
+        case LogoSize.large:
+            return 30;
+        case LogoSize.small:
+            return 20;
+        default:
+        case LogoSize.medium:
+            return 24;
+    }
 }

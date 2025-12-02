@@ -1,3 +1,4 @@
+import { useIsMobile } from "@/hooks/use-mobile";
 import { LogoSize, Page } from "@/lib/types";
 import { useMemo, type FC, type ReactElement } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,6 +9,7 @@ import { ThemeToggle } from "./ThemeToggle";
 const TopBar: FC = (): ReactElement => {
     const navigate = useNavigate();
     const location = useLocation();
+    const isMobile = useIsMobile();
 
     const isHomePage = useMemo(
         () => location.pathname === `/${Page.homepage}`,
@@ -15,18 +17,19 @@ const TopBar: FC = (): ReactElement => {
     );
 
     return (
-        <div className="flex justify-between w-full sticky top-0 p-3">
+        <div className="flex justify-between items-center w-full sticky top-0 p-3">
             {!isHomePage ?
                 <>
                     <Logo
                         size={LogoSize.medium}
                         className="cursor-pointer"
+                        iconOnly={isMobile}
                         onClick={() => navigate(Page.homepage)}
                     />
                     <SearchField showBackButton isDialogViewAllowed />
                 </>
                 : <span />}
-            <div className="w-38 flex justify-end">
+            <div className={`flex justify-end ${!isMobile && "w-38"}`}>
                 <ThemeToggle />
             </div>
         </div>
