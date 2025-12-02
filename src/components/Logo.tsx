@@ -4,11 +4,11 @@ import type { FC, ReactElement } from "react";
 import { TypographyH2, TypographyH3, TypographyH4 } from "./ui/typography";
 
 type LogoProps = {
-    /** */
+    /** Size of the logo. */
     size: LogoSize;
-    /** */
+    /** ClassName for the logo. */
     className?: string;
-    /** */
+    /** Optional on click method for the logo. */
     onClick?: () => void;
 };
 const Logo: FC<LogoProps> = (props: LogoProps): ReactElement | null => {

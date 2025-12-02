@@ -25,6 +25,7 @@ export type BookResponse = {
     items?: Volume[];
 };
 
+/** Theme options */
 export const Theme = {
     system: "system",
     light: "light",
@@ -33,6 +34,7 @@ export const Theme = {
 
 export type Theme = (typeof Theme)[keyof typeof Theme];
 
+/** Query options on the search page. */
 export const SearchQuery = {
     page: "page",
     q: "q",
@@ -40,6 +42,7 @@ export const SearchQuery = {
 
 export type SearchQuery = (typeof SearchQuery)[keyof typeof SearchQuery];
 
+/** Page options. */
 export const Page = {
     search: "search",
     book: "book",
@@ -48,6 +51,7 @@ export const Page = {
 
 export type Page = (typeof Page)[keyof typeof Page];
 
+/** Sizes of the logo. */
 export const LogoSize = {
     small: "small",
     medium: "medium",
