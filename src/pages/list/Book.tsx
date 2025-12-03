@@ -34,7 +34,7 @@ const Book: FC<BookProps> = ({ book }): ReactElement => {
                             ","}
                     </TypographyMuted>
                 ))
-                : <TypographyMuted className="italic">
+            :   <TypographyMuted className="italic">
                     � Unknown author(s)
                 </TypographyMuted>
             }

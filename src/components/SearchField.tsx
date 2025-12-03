@@ -95,7 +95,7 @@ const SearchField: FC<SearchInputProps> = ({
             >
                 <ArrowLeft />
             </Button>
-            : null;
+        :   null;
 
     return (
         <div className="flex flex-row gap-2 justify-center align-middle">
@@ -108,7 +108,7 @@ const SearchField: FC<SearchInputProps> = ({
                     navigateToSearchQuery={navigateToSearchQuery}
                     setInputValue={setInputValue}
                 />
-                : <>
+            :   <>
                     <Input
                         className="w-75"
                         type="text"
