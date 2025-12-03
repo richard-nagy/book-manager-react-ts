@@ -6,7 +6,7 @@ import {
     TypographyH4,
     TypographyMuted,
 } from "@/components/ui/typography";
-import { useBookSearch } from "@/context/BookSearchContext";
+import { useBook } from "@/context/BookContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import parse from "html-react-parser";
 import { CircleQuestionMark, Star } from "lucide-react";
@@ -15,7 +15,7 @@ import { useParams } from "react-router-dom";
 
 const Book: FC = (): ReactElement => {
     const { id } = useParams();
-    const { volumeFetchIsPending, volumeMap, fetchVolume } = useBookSearch();
+    const { volumeFetchIsPending, volumeMap, fetchVolume } = useBook();
     const isMobile = useIsMobile();
 
     const volume = useMemo(

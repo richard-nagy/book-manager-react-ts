@@ -2,7 +2,7 @@ import type { BookResponse, Volume } from "@/lib/types";
 import { attemptFetch, isStringEmpty } from "@/lib/utils";
 import { useCallback, useState, useTransition, type ReactNode } from "react";
 import { toast } from "sonner";
-import { BookSearchContext } from "./BookSearchContext";
+import { BookContext } from "./BookContext";
 
 /** This is the max number Google Books API allows by default. */
 const maxResults = 40;
@@ -54,7 +54,7 @@ const getBookByVolumeIdCore = async (
     return data;
 };
 
-export type BookSearchContextType = {
+export type BookContextType = {
     /**
      * List of books.
      * If null, there are no results.
@@ -91,12 +91,11 @@ export type BookSearchContextType = {
     clearResults: () => void;
 };
 
-type BookSearchProviderProps = {
+type BookProviderProps = {
     children: ReactNode;
 };
 
-// todo: change this name to BookProvider
-export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
+export const BookProvider = ({ children }: BookProviderProps) => {
     const [currentSearchQuery, setCurrentSearchQuery] = useState<string | null>(
         null,
     );
@@ -230,8 +229,6 @@ export const BookSearchProvider = ({ children }: BookSearchProviderProps) => {
     };
 
     return (
-        <BookSearchContext.Provider value={value}>
-            {children}
-        </BookSearchContext.Provider>
+        <BookContext.Provider value={value}>{children}</BookContext.Provider>
     );
 };

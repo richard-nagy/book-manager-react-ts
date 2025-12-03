@@ -27,6 +27,7 @@ const Cover: FC<CoverProps> = ({
         width !== undefined ? width
         : isMobile ? 30
         : 50;
+
     const calculatedHeight =
         height !== undefined ? height
         : isMobile ? 45

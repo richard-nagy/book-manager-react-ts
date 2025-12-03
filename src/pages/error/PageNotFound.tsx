@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { useBookSearch } from "@/context/BookSearchContext";
+import { useBook } from "@/context/BookContext";
 import { Page } from "@/lib/types";
 import { HomeIcon } from "lucide-react";
 import { type FC, type ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 
 const PageNotFound: FC = (): ReactElement => {
-    const { clearResults } = useBookSearch();
+    const { clearResults } = useBook();
 
     const navigate = useNavigate();
 

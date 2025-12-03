@@ -1,6 +1,6 @@
 import EmptyView from "@/components/EmptyView";
 import { Spinner } from "@/components/ui/spinner";
-import { useBookSearch } from "@/context/BookSearchContext";
+import { useBook } from "@/context/BookContext";
 import { SearchQuery } from "@/lib/types";
 import Book from "@/pages/list/Book";
 import { useMemo } from "react";
@@ -8,8 +8,7 @@ import { useSearchParams } from "react-router-dom";
 import ListPagination from "./ListPagination";
 
 const List = () => {
-    const { booksByPage, maxNumberOfPages, bookFetchIsPending } =
-        useBookSearch();
+    const { booksByPage, maxNumberOfPages, bookFetchIsPending } = useBook();
 
     const [searchParams] = useSearchParams();
 

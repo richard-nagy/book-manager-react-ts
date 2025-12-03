@@ -2,7 +2,7 @@ import Cover from "@/components/Cover";
 import { TypographyMuted } from "@/components/ui/typography";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Volume } from "@/lib/types";
-import { useCallback, type FC, type ReactElement } from "react";
+import { type FC, type ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 
 type BookProps = {
@@ -12,9 +12,9 @@ const Book: FC<BookProps> = ({ book }): ReactElement => {
     const navigate = useNavigate();
     const isMobile = useIsMobile();
 
-    const navigateToBook = useCallback(() => {
+    const navigateToBook = () => {
         navigate(`/book/${book.id}`, { relative: "route" });
-    }, [book.id, navigate]);
+    };
 
     return (
         <div

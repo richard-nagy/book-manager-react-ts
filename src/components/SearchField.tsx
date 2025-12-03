@@ -1,4 +1,4 @@
-import { useBookSearch } from "@/context/BookSearchContext";
+import { useBook } from "@/context/BookContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Page, SearchQuery } from "@/lib/types";
 import { isStringEmpty } from "@/lib/utils";
@@ -31,7 +31,7 @@ const SearchField: FC<SearchInputProps> = ({
     const isMobile = useIsMobile();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const { currentSearchQuery, fetchBooks } = useBookSearch();
+    const { currentSearchQuery, fetchBooks } = useBook();
 
     const searchQuery =
         searchParams.get(SearchQuery.q) ?? currentSearchQuery ?? "";
@@ -96,10 +96,12 @@ const SearchField: FC<SearchInputProps> = ({
             >
                 <ArrowLeft />
             </Button>
-            : null;
+        :   null;
 
     return (
-        <div className={`flex flex-row gap-2 justify-center align-middle ${className}`}>
+        <div
+            className={`flex flex-row gap-2 justify-center align-middle ${className}`}
+        >
             {backButton}
             {isMobile && isDialogViewAllowed ?
                 <SearchFieldDialog
@@ -109,7 +111,7 @@ const SearchField: FC<SearchInputProps> = ({
                     navigateToSearchQuery={navigateToSearchQuery}
                     setInputValue={setInputValue}
                 />
-                : <>
+            :   <>
                     <Input
                         className="w-75"
                         type="text"

@@ -7,7 +7,7 @@ import {
     DropdownMenuRadioItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useTheme } from "@/context/ThemeProviderContext";
+import { useTheme } from "@/context/ThemeContext";
 import { Theme } from "@/lib/types";
 import { Moon, Sun } from "lucide-react";
 import { useState } from "react";

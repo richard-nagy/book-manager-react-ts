@@ -1,10 +1,10 @@
-import { useBookSearch } from "@/context/BookSearchContext";
+import { useBook } from "@/context/BookContext";
 import { Button } from "@/components/ui/button";
 import type { FC } from "react";
 import { Link, useRouteError } from "react-router-dom";
 
 const CustomErrorBoundary: FC = () => {
-    const { clearResults } = useBookSearch();
+    const { clearResults } = useBook();
     const error = useRouteError();
     const isError = error instanceof Error;
 

@@ -1,6 +1,6 @@
 import type { Theme } from "@/lib/types";
 import { useEffect, useState } from "react";
-import { ThemeProviderContext } from "./ThemeProviderContext";
+import { ThemeProviderContext } from "./ThemeContext";
 
 type ThemeProviderProps = {
     children: React.ReactNode;

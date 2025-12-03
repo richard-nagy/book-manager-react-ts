@@ -1,4 +1,4 @@
-export const BookSearch = (
+export const BookFinder = (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"

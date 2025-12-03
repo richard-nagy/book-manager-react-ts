@@ -28,11 +28,14 @@ export default defineConfig([
         rules: {
             "no-console": ["error", { allow: ["warn", "error"] }],
             "react/jsx-key": "error",
-            "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0, "maxBOF": 0 }],
-            "eqeqeq": ["error", "always"],
+            "no-multiple-empty-lines": [
+                "error",
+                { max: 1, maxEOF: 0, maxBOF: 0 },
+            ],
+            eqeqeq: ["error", "always"],
             "default-case": "error",
             "dot-notation": "error",
-            "camelcase": ["error", { "properties": "always" }],
+            camelcase: ["error", { properties: "always" }],
         },
     },
 ]);
