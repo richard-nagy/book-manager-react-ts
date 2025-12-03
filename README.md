@@ -1,73 +1,63 @@
-# React + TypeScript + Vite
+## 📖 Book Finder: Project Overview
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a **Vite, React, and TypeScript** project named `book-finder`. It is designed to be a client for the **Google Books API**, allowing users to search for books and view detailed information about specific volumes.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+- **Book Search:** Search for books using the Google Books API.
+- **Detailed View:** Open a book from the results list to view its **details**.
+- **URL-Driven Navigation:** Search queries and book details are reflected in the **URL** using **React Router DOM**.
+- **Optimized Data Fetching:** Results are **stashed** to prevent unnecessary refetching when navigating back and forth between search pages and results.
+- **Robust Error Handling:** The application automatically attempts to refetch data up to **3 times** before displaying a toast error message upon failure.
+- **Theming:** Includes **light and dark modes**.
+- **Responsive Design:** Offers a dedicated **mobile view**.
+- **Styling:** Uses **Tailwind CSS** and **shadcn/ui** components for a clean, modern look.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack & Development
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The project is built on **Vite** with **React** and **TypeScript**.
 
-```js
-export default defineConfig([
-    globalIgnores(["dist"]),
-    {
-        files: ["**/*.{ts,tsx}"],
-        extends: [
-            // Other configs...
+### Key Dependencies
 
-            // Remove tseslint.configs.recommended and replace with this
-            tseslint.configs.recommendedTypeChecked,
-            // Alternatively, use this for stricter rules
-            tseslint.configs.strictTypeChecked,
-            // Optionally, add this for stylistic rules
-            tseslint.configs.stylisticTypeChecked,
+- **UI/Styling:** `tailwind-css`, `shadcn/ui` (using **Radix UI** components).
+- **Routing:** `react-router-dom`.
+- **Utilities:** `lodash`, `slugify`, `clsx`.
+- **State/UX:** `sonner` (for toasts), `next-themes`.
 
-            // Other configs...
-        ],
-        languageOptions: {
-            parserOptions: {
-                project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-                tsconfigRootDir: import.meta.dirname,
-            },
-            // other options...
-        },
-    },
-]);
-```
+### Available Scripts
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+To get started, clone the repository and run:
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+`bash`
+pnpm install
 
-export default defineConfig([
-    globalIgnores(["dist"]),
-    {
-        files: ["**/*.{ts,tsx}"],
-        extends: [
-            // Other configs...
-            // Enable lint rules for React
-            reactX.configs["recommended-typescript"],
-            // Enable lint rules for React DOM
-            reactDom.configs.recommended,
-        ],
-        languageOptions: {
-            parserOptions: {
-                project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-                tsconfigRootDir: import.meta.dirname,
-            },
-            // other options...
-        },
-    },
-]);
-```
+### Available Scripts
+
+The following scripts are available for development and building:
+
+- **Development:** `pnpm dev` (Starts the development server)
+- **Build:** `pnpm build` (Compiles TypeScript and builds the project for production)
+- **Linting:** `pnpm lint` (Runs **ESLint** for code quality checks)
+- **Preview:** `pnpm preview` (Serves the production build locally)
+
+**ESLint** and **Prettier** are configured to ensure a consistent and high-quality coding experience.
+
+---
+
+## 🔑 Environment Variables (API Key)
+
+This project requires a **Google Books API Key** to fetch data.
+
+1.  **Get a Key:** Obtain an API key from the **Google Cloud Console**.
+2.  **Create `.env` File:** Create a file named `.env` in the root directory of the project.
+3.  **Set Variable:** Add your key to the file using the following format:
+
+    ```ini
+    VITE_GOOGLE_BOOK_API_KEY="YOUR_ACTUAL_API_KEY_HERE"
+    ```
+
+    _Note: **Vite** requires environment variables exposed to the client to be prefixed with `VITE_`.\_
