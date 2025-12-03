@@ -21,10 +21,12 @@ const firstPageNumber = "1";
 type SearchInputProps = {
     showBackButton?: boolean;
     isDialogViewAllowed?: boolean;
+    className?: string;
 };
 const SearchField: FC<SearchInputProps> = ({
     showBackButton,
     isDialogViewAllowed,
+    className,
 }) => {
     const isMobile = useIsMobile();
     const [searchParams] = useSearchParams();
@@ -94,10 +96,10 @@ const SearchField: FC<SearchInputProps> = ({
             >
                 <ArrowLeft />
             </Button>
-        :   null;
+            : null;
 
     return (
-        <div className="flex flex-row gap-2 justify-center align-middle">
+        <div className={`flex flex-row gap-2 justify-center align-middle ${className}`}>
             {backButton}
             {isMobile && isDialogViewAllowed ?
                 <SearchFieldDialog
@@ -107,7 +109,7 @@ const SearchField: FC<SearchInputProps> = ({
                     navigateToSearchQuery={navigateToSearchQuery}
                     setInputValue={setInputValue}
                 />
-            :   <>
+                : <>
                     <Input
                         className="w-75"
                         type="text"
