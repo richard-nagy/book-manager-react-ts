@@ -39,6 +39,7 @@ const Logo: FC<LogoProps> = ({
             return (
                 <Typography
                     variant="h2"
+                    disableMobileView
                     className={className}
                     onClick={onClick}
                 >
@@ -49,6 +50,7 @@ const Logo: FC<LogoProps> = ({
             return (
                 <Typography
                     variant="h3"
+                    disableMobileView
                     className={className}
                     onClick={onClick}
                 >
@@ -59,6 +61,7 @@ const Logo: FC<LogoProps> = ({
             return (
                 <Typography
                     variant="h4"
+                    disableMobileView
                     className={className}
                     onClick={onClick}
                 >

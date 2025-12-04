@@ -7,11 +7,13 @@ type TypographyVariant = "muted" | "p" | "h4" | "h3" | "h2" | "h1";
 
 type TypographyProps = {
     variant: TypographyVariant;
+    disableMobileView?: boolean;
 } & HTMLAttributes<HTMLElement>;
 
 /**
  * A combined typography component that renders different HTML elements based on the 'variant' prop.
  *
+ * @param {boolean} disableMobileView - If true, the mobile view sizes will be disabled.
  * @param {TypographyVariant} variant - The type of typography to render (e.g., "h1", "p", "muted").
  * @param {string} [className] - Additional class names to apply.
  * @param {React.ReactNode} children - The content of the typography element.
@@ -21,6 +23,7 @@ export function Typography({
     variant,
     className,
     children,
+    disableMobileView,
     ...props
 }: TypographyProps): ReactElement {
     const isMobile = useIsMobile();
@@ -72,7 +75,8 @@ export function Typography({
         muted: "text-muted-foreground",
     };
 
-    const sizeClass = isMobile ? mobileClass : desktopClass;
+    const sizeClass =
+        !disableMobileView && isMobile ? mobileClass : desktopClass;
 
     const baseClass = cn(commonClasses[variant], sizeClass);
 
