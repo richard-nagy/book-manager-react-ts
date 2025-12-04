@@ -1,4 +1,3 @@
-import { useIsMobile } from "@/hooks/use-mobile";
 import { CircleQuestionMark } from "lucide-react";
 import type { FC, ReactElement } from "react";
 
@@ -14,29 +13,10 @@ type CoverProps = {
     /** ClassName for the Cover Container element. */
     className?: string;
 };
-const Cover: FC<CoverProps> = ({
-    src,
-    alt,
-    className,
-    height,
-    width,
-}): ReactElement => {
-    const isMobile = useIsMobile();
-
-    const calculatedWidth =
-        width !== undefined ? width
-        : isMobile ? 30
-        : 40;
-
-    const calculatedHeight =
-        height !== undefined ? height
-        : isMobile ? 45
-        : 60;
-
+const Cover: FC<CoverProps> = ({ src, alt, className }): ReactElement => {
     return (
         <div
-            style={{}}
-            className={`${"w-" + calculatedWidth} ${"h-" + calculatedHeight} bg-background flex justify-center items-center shrink-0 ${className ?? ""}`}
+            className={`bg-background flex justify-center items-center shrink-0 w-30 md:w-40 h-45 md:h-60  ${className ?? ""}`}
         >
             {src ?
                 <img

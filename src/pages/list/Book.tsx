@@ -1,6 +1,5 @@
 import Cover from "@/components/Cover";
 import { Typography } from "@/components/ui/typography";
-import { useIsMobile } from "@/hooks/use-mobile";
 import type { Volume } from "@/lib/types";
 import { type FC, type ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,22 +7,16 @@ import { useNavigate } from "react-router-dom";
 type BookProps = {
     book: Volume;
 };
+
 const Book: FC<BookProps> = ({ book }): ReactElement => {
     const navigate = useNavigate();
-    const isMobile = useIsMobile();
-
-    const width = isMobile ? 30 : 40;
-    const height = isMobile ? 45 : 60;
 
     const navigateToBook = () => {
         navigate(`/book/${book.id}`, { relative: "route" });
     };
 
     return (
-        <div
-            className={`${"w-" + width} ${"h-" + height} cursor-pointer outline-1`}
-            onClick={navigateToBook}
-        >
+        <div className={`cursor-pointer w-30 md:w-40`} onClick={navigateToBook}>
             <Cover
                 className="mb-2"
                 src={book.volumeInfo?.imageLinks?.smallThumbnail}
@@ -38,10 +31,10 @@ const Book: FC<BookProps> = ({ book }): ReactElement => {
                     </Typography>
                 ))
             :   <Typography variant="muted" className="italic">
-                    � Unknown author(s)
+                    &copy; Unknown author(s)
                 </Typography>
             }
-            <div className="mt-1">{book.volumeInfo.title}</div>
+            <div className="mt-1">{book.volumeInfo?.title}</div>
         </div>
     );
 };
