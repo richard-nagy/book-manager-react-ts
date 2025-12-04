@@ -36,6 +36,8 @@ export default defineConfig([
             "default-case": "error",
             "dot-notation": "error",
             camelcase: ["error", { properties: "always" }],
+            semi: "error",
+            "prefer-const": "error",
         },
     },
 ]);
