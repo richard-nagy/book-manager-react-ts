@@ -22,9 +22,8 @@ const fetchBooksCore = async (
 ): Promise<BookResponse> => {
     const url = `${baseUrl}?q=${encodeURIComponent(
         searchQuery,
-    )}&key=${apiKey}&maxResults=${maxResults}&startIndex=${
-        (startIndex - 1) * maxResults
-    }`;
+    )}&key=${apiKey}&maxResults=${maxResults}&startIndex=${(startIndex - 1) * maxResults
+        }`;
 
     const response = await fetch(url);
 
@@ -133,7 +132,6 @@ export const BookProvider = ({ children }: BookProviderProps) => {
                     }
 
                     if (!searchQuery || isStringEmpty(searchQuery)) {
-                        clearResults();
                         return;
                     }
 
@@ -171,7 +169,6 @@ export const BookProvider = ({ children }: BookProviderProps) => {
                         errorMessage = error.message;
                     }
 
-                    clearResults();
                     console.error(error);
                     toast.error("Search Failed", {
                         description: `Error details: ${errorMessage}`,
@@ -179,7 +176,8 @@ export const BookProvider = ({ children }: BookProviderProps) => {
                 } finally {
                     if (!sameSearchQuery) {
                         setCurrentSearchQuery(searchQuery);
-                        // On query change clear the saved volumes
+                        // On query change clear the saved volumes and book results
+                        clearResults();
                         setVolumeMap(null);
                     }
                 }
