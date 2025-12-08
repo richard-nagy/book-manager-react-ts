@@ -23,7 +23,7 @@ const Logo: FC<LogoProps> = ({
     iconOnly,
     onClick,
 }): ReactElement | null => {
-    const className = `flex items-center gap-1 ${classNameProp}`;
+    const className = `flex items-center gap-1 text-foreground ${classNameProp}`;
 
     const logo = <BookFinder size={getLogoSize(size)} />;
 

@@ -13,7 +13,7 @@ const App = () => {
                 <div className="flex w-full h-screen">
                     <main className="flex-1 overflow-y-auto flex flex-col">
                         <TopBar />
-                        <ScrollArea className="rounded-lg mx-3 mb-3 p-3 flex-1 overflow-y-auto bg-primary-foreground relative">
+                        <ScrollArea className="rounded-lg mx-3 mb-3 p-3 flex-1 overflow-y-auto bg-secondary relative">
                             <Outlet />
                         </ScrollArea>
                     </main>
