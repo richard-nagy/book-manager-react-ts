@@ -123,6 +123,11 @@ export const BookProvider = ({ children }: BookProviderProps) => {
                     searchQuery?.toLocaleLowerCase();
 
                 try {
+                    // TODO: Instead of throwing an error if there is no API key,
+                    // TODO: Lets create a banner at the top of the page (below the top bar?),
+                    // TODO: That warns about the missing API key.
+                    // TODO: If the API key is missing, don't even attempt to fetch,
+                    // TODO: And disable the search bar and buttons.
                     if (!apiKey) {
                         throw new Error("Missing API Key");
                     }
@@ -192,6 +197,7 @@ export const BookProvider = ({ children }: BookProviderProps) => {
 
                 try {
                     if (!apiKey) {
+                        // TODO: See todo comments in the fetchBooks callback
                         throw new Error("Missing API Key or Volume ID");
                     }
 
