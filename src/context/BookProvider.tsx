@@ -95,6 +95,8 @@ type BookProviderProps = {
 };
 
 export const BookProvider = ({ children }: BookProviderProps) => {
+    // TODO: There is a bug, where after starting search,
+    // TODO: The pagination and the previous results stays visible for a second.
     const [currentSearchQuery, setCurrentSearchQuery] = useState<string | null>(
         null,
     );
