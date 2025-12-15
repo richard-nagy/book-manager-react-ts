@@ -1,6 +1,6 @@
-## 📖 Book Finder: Project Overview
+## 📖 Book Finder: UI Overview
 
-This is a **Vite, React, and TypeScript** project named `book-finder`. It is designed to be a client for the **Google Books API**, allowing users to search for books and view detailed information about specific volumes.
+This is the **Vite, React, and TypeScript** part of the project named `book-finder`. It is designed to be a client for the **Google Books API**, allowing users to search for books and view detailed information about specific volumes.
 
 ---
 
