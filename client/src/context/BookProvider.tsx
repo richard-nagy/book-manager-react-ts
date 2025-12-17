@@ -21,8 +21,9 @@ const fetchBooksCore = async (
 ): Promise<BookResponse> => {
     const url = `${baseUrl}?q=${encodeURIComponent(
         searchQuery,
-    )}&key=${apiKey}&maxResults=${maxResults}&startIndex=${(startIndex - 1) * maxResults
-        }`;
+    )}&key=${apiKey}&maxResults=${maxResults}&startIndex=${
+        (startIndex - 1) * maxResults
+    }`;
 
     const response = await fetch(url);
 
@@ -137,7 +138,12 @@ export const BookProvider = ({ children }: BookProviderProps) => {
                     }
 
                     const data = await attemptFetch(
-                        () => fetchBooksCore(searchQuery, pageNumber, googleBooksApiKey ?? ""),
+                        () =>
+                            fetchBooksCore(
+                                searchQuery,
+                                pageNumber,
+                                googleBooksApiKey ?? "",
+                            ),
                         maxRetries,
                         delayMs,
                     );
@@ -195,7 +201,11 @@ export const BookProvider = ({ children }: BookProviderProps) => {
 
                 try {
                     const volume = await attemptFetch(
-                        () => getBookByVolumeIdCore(volumeId, googleBooksApiKey ?? ""),
+                        () =>
+                            getBookByVolumeIdCore(
+                                volumeId,
+                                googleBooksApiKey ?? "",
+                            ),
                         maxRetries,
                         delayMs,
                     );

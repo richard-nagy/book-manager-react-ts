@@ -1,4 +1,15 @@
-const BookFinder = ({ size = 24, color = "currentColor", ...props }) => (
+import type { FC, SVGProps } from "react";
+
+interface IconProps extends SVGProps<SVGSVGElement> {
+    size?: number;
+    color?: string;
+}
+
+const BookFinder: FC<IconProps> = ({
+    size = 24,
+    color = "currentColor",
+    ...props
+}) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width={size}

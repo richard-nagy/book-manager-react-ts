@@ -1,9 +1,4 @@
-import {
-    type FC,
-    type JSX,
-    type ReactElement,
-    type ReactNode,
-} from "react";
+import { type FC, type JSX, type ReactElement, type ReactNode } from "react";
 import {
     Empty,
     EmptyContent,
