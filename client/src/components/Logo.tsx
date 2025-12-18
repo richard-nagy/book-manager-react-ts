@@ -1,77 +1,53 @@
-import { BookFinder } from "@/lib/Icons";
-import { LogoSize } from "@/lib/types";
-import { getLogoSize } from "@/lib/utils";
-import type { FC, ReactElement } from "react";
-import { Typography } from "./ui/typography";
+import type { FC, ImgHTMLAttributes } from "react";
+import blackTextLogo from "../svgs/black-text-logo.svg";
+import whiteTextLogo from "../svgs/white-text-logo.svg";
+import logo from "../svgs/logo.svg";
+import { useTheme } from "@/context/ThemeContext.tsx";
 
-const appName = "Book Finder";
+interface IconProps extends ImgHTMLAttributes<HTMLImageElement> {
+    height?: number;
+    resolvedTheme?: "dark" | "light" | string;
+    noText?: boolean;
+}
 
-type LogoProps = {
-    /** Size of the logo. */
-    size: LogoSize;
-    /** ClassName for the logo. */
-    className?: string;
-    /** If true only show the icon. */
-    iconOnly?: boolean;
-    /** Optional on click method for the logo. */
-    onClick?: () => void;
-};
+const Logo: FC<IconProps> = ({ height = 24, noText, ...props }) => {
+    const { resolvedTheme } = useTheme();
 
-const Logo: FC<LogoProps> = ({
-    size,
-    className: classNameProp,
-    iconOnly,
-    onClick,
-}): ReactElement | null => {
-    const className = `flex items-center gap-1 text-foreground ${classNameProp}`;
+    const imgProps = props as ImgHTMLAttributes<HTMLImageElement>;
 
-    const logo = <BookFinder size={getLogoSize(size)} />;
-
-    if (iconOnly) {
+    if (noText) {
         return (
-            <div className={className} onClick={onClick}>
-                {logo}
-            </div>
+            <img
+                src={logo}
+                height={height}
+                width={height}
+                alt="Book Finder"
+                {...imgProps}
+            />
         );
     }
 
-    switch (size) {
-        case LogoSize.large:
-            return (
-                <Typography
-                    variant="h2"
-                    disableMobileView
-                    className={className}
-                    onClick={onClick}
-                >
-                    {logo} {appName}
-                </Typography>
-            );
-        case LogoSize.medium:
-            return (
-                <Typography
-                    variant="h3"
-                    disableMobileView
-                    className={className}
-                    onClick={onClick}
-                >
-                    {logo} {appName}
-                </Typography>
-            );
-        case LogoSize.small:
-            return (
-                <Typography
-                    variant="h4"
-                    disableMobileView
-                    className={className}
-                    onClick={onClick}
-                >
-                    {logo} {appName}
-                </Typography>
-            );
-        default:
-            return null;
+    if (resolvedTheme === "dark") {
+        return (
+            <img
+                src={whiteTextLogo}
+                height={height}
+                width={2.5 * height}
+                alt="Book Finder"
+                {...imgProps}
+            />
+        );
     }
+
+    return (
+        <img
+            src={blackTextLogo}
+            height={height}
+            width={2.5 * height}
+            alt="Book Finder"
+            {...imgProps}
+        />
+    );
 };
 
-export default Logo;
+export { Logo };

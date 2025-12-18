@@ -8,7 +8,7 @@ import { Navigate } from "react-router-dom";
 
 const NoApiKey: FC = () => {
     if (googleBooksApiKey) {
-        return <Navigate to={Page.homepage} replace relative="route" />;
+        return <Navigate to={`/${Page.homepage}`} relative={"path"} />;
     }
 
     return (

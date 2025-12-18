@@ -1,10 +1,10 @@
 import { useIsMobile } from "@/hooks/use-mobile";
-import { LogoSize, Page } from "@/lib/types";
-import { useMemo, type FC, type ReactElement } from "react";
+import { Page } from "@/lib/types";
+import { type FC, type ReactElement, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Logo from "./Logo";
 import SearchField from "./SearchField";
 import { ThemeToggle } from "./ThemeToggle";
+import { Logo } from "@/components/Logo.tsx";
 
 const TopBar: FC = (): ReactElement => {
     const navigate = useNavigate();
@@ -21,9 +21,9 @@ const TopBar: FC = (): ReactElement => {
             {!isHomePage ?
                 <>
                     <Logo
-                        size={LogoSize.medium}
                         className="cursor-pointer"
-                        iconOnly={isMobile}
+                        noText={isMobile}
+                        height={36}
                         onClick={() => navigate(Page.homepage)}
                     />
                     <SearchField showBackButton isDialogViewAllowed />
