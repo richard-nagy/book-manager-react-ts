@@ -1,7 +1,7 @@
 import type { FC, ImgHTMLAttributes } from "react";
-import blackTextLogo from "../svgs/black-text-logo.svg";
-import whiteTextLogo from "../svgs/white-text-logo.svg";
-import logo from "../svgs/logo.svg";
+import blackTextLogo from "@/assets/images/black-text-logo.svg";
+import whiteTextLogo from "@/assets/images/white-text-logo.svg";
+import logo from "@/assets/images/logo.svg";
 import { useTheme } from "@/context/ThemeContext.tsx";
 
 interface IconProps extends ImgHTMLAttributes<HTMLImageElement> {
