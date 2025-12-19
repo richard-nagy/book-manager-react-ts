@@ -95,8 +95,6 @@ type BookProviderProps = {
 };
 
 export const BookProvider = ({ children }: BookProviderProps) => {
-    // TODO: There is a bug, where after starting search,
-    // TODO: The pagination and the previous results stays visible for a second.
     const [currentSearchQuery, setCurrentSearchQuery] = useState<string | null>(
         null,
     );
@@ -118,15 +116,22 @@ export const BookProvider = ({ children }: BookProviderProps) => {
 
     const fetchBooks = useCallback(
         async (searchQuery: string | null, pageNumber = 0): Promise<void> => {
+            if (googleBooksApiKey === undefined) {
+                return;
+            }
+
+            const sameSearchQuery =
+                currentSearchQuery?.toLocaleLowerCase() ===
+                searchQuery?.toLocaleLowerCase();
+
+            // Clear results immediately when starting a new search
+            if (!sameSearchQuery) {
+                clearResults();
+                setVolumeMap(null);
+                setCurrentSearchQuery(searchQuery);
+            }
+
             startBookFetch(async () => {
-                if (googleBooksApiKey === undefined) {
-                    return;
-                }
-
-                const sameSearchQuery =
-                    currentSearchQuery?.toLocaleLowerCase() ===
-                    searchQuery?.toLocaleLowerCase();
-
                 try {
                     if (!searchQuery || isStringEmpty(searchQuery)) {
                         return;
@@ -148,13 +153,8 @@ export const BookProvider = ({ children }: BookProviderProps) => {
                         delayMs,
                     );
 
-                    if (data.totalItems > 0) {
-                        const totalPages = data.totalItems;
-
-                        setMaxNumberOfPages(Math.ceil(totalPages / maxResults));
-                    }
-
-                    if (data.items && (data.items?.length ?? 0) > 0) {
+                    if (data.items && data.items.length > 0 && data.totalItems > 0) {
+                        setMaxNumberOfPages(Math.ceil(data.totalItems / maxResults));
                         setBooksByPage((ob) => {
                             const newBooks = new Map(
                                 // If we have the same search query, we keep the previous results,
@@ -175,13 +175,6 @@ export const BookProvider = ({ children }: BookProviderProps) => {
                     toast.error("Search Failed", {
                         description: `Error details: ${errorMessage}`,
                     });
-                } finally {
-                    if (!sameSearchQuery) {
-                        setCurrentSearchQuery(searchQuery);
-                        // On query change clear the saved volumes and book results
-                        clearResults();
-                        setVolumeMap(null);
-                    }
                 }
             });
         },
