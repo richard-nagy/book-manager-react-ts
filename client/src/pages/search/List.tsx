@@ -23,33 +23,35 @@ const List = () => {
         [booksByPage, currentPageNumber],
     );
 
-    // TODO: If we open the search page, and there is no search query,
-    // TODO: It returns us the no results view.
     return (
         <div className="flex flex-col gap-10">
-            {bookFetchIsPending ?
+            {bookFetchIsPending && (
                 <EmptyView
                     title="Loading Books.."
                     description="Fetching data. Please wait."
-                    icon={<Spinner className="h-9 w-9" />}
+                    icon={<Spinner />}
                 />
-            :   <div className="flex flex-wrap gap-6 mt-15 justify-center">
-                    {(
-                        (booksOfCurrentPage &&
-                            booksOfCurrentPage.length <= 0) ||
-                        !booksOfCurrentPage
-                    ) ?
-                        <EmptyView
-                            icon={<Frown fontSize={36} />}
-                            description="Your search returned no results."
-                            title="No Books Found"
-                        />
-                    :   booksOfCurrentPage?.map((b) => (
+            )}
+
+            {!bookFetchIsPending &&
+                (!booksOfCurrentPage || booksOfCurrentPage.length === 0) && (
+                    <EmptyView
+                        title="No Books Found"
+                        description="Your search returned no results."
+                        icon={<Frown />}
+                    />
+                )}
+
+            {!bookFetchIsPending &&
+                booksOfCurrentPage &&
+                booksOfCurrentPage.length > 0 && (
+                    <div className="flex flex-wrap gap-6 mt-15 justify-center">
+                        {booksOfCurrentPage.map((b) => (
                             <Book key={b.id} book={b} />
-                        ))
-                    }
-                </div>
-            }
+                        ))}
+                    </div>
+                )}
+
             {maxNumberOfPages > 0 && <ListPagination />}
         </div>
     );
