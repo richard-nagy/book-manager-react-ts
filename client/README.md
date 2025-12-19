@@ -1,50 +1,169 @@
-## 📖 Book Finder: UI Overview
+## 📖 Book Finder: Client Application
 
-This is the **Vite, React, and TypeScript** part of the project named `book-finder`. It is designed to be a client for the **Google Books API**, allowing users to search for books and view detailed information about specific volumes.
-
----
-
-## ✨ Features
-
-- **Book Search:** Search for books using the Google Books API.
-- **Detailed View:** Open a book from the results list to view its **details**.
-- **URL-Driven Navigation:** Search queries and book details are reflected in the **URL** using **React Router DOM**.
-- **Optimized Data Fetching:** Results are **stashed** to prevent unnecessary refetching when navigating back and forth between search pages and results.
-- **Robust Error Handling:** The application automatically attempts to refetch data up to **3 times** before displaying a toast error message upon failure.
-- **Theming:** Includes **light and dark modes**.
-- **Responsive Design:** Offers a dedicated **mobile view**.
-- **Styling:** Uses **Tailwind CSS** and **shadcn/ui** components for a clean, modern look.
+The frontend application for Book Finder, built with **Vite**, **React 18**, and **TypeScript**. This client provides a modern, performant interface for searching and discovering books through the Google Books API.
 
 ---
 
-## 🛠️ Tech Stack & Development
+## 🏗️ Technical Architecture
 
-The project is built on **Vite** with **React** and **TypeScript**.
+### Core Technologies
 
-### Key Dependencies
+- **Build Tool:** Vite 5.x - Lightning-fast HMR and optimized production builds
+- **Framework:** React 18 - Leveraging concurrent features and automatic batching
+- **Language:** TypeScript 5.x - Strict type safety with comprehensive type definitions
+- **Routing:** React Router DOM v6 - Declarative routing with data loading patterns
 
-- **UI/Styling:** `tailwind-css`, `shadcn/ui` (using **Radix UI** components).
-- **Routing:** `react-router-dom`.
-- **Utilities:** `lodash`, `slugify`, `clsx`.
-- **State/UX:** `sonner` (for toasts), `next-themes`.
+### State Management
+
+- **Context API:** Global state management for themes and book data
+- **Custom Hooks:** Encapsulated logic for mobile detection and responsive behavior
+- **URL State:** Search queries and filters persisted in URL parameters for shareability
+
+### Styling & UI
+
+- **Tailwind CSS:** Utility-first CSS framework with custom configuration
+- **shadcn/ui:** Accessible, customizable component library built on Radix UI primitives
+- **Component Architecture:**
+    - Atomic design principles (atoms, molecules, organisms)
+    - Compound components for complex UI patterns
+    - Headless UI components for maximum flexibility
+
+### Performance Optimizations
+
+- **Data Caching:** In-memory cache prevents redundant API calls during navigation
+- **Code Splitting:** Route-based lazy loading reduces initial bundle size
+- **Image Optimization:** Lazy loading for book covers with fallback states
+- **Debounced Search:** Reduces API calls during user input with lodash debounce
+
+### API Integration
+
+- **Service Layer:** Abstracted Google Books API client with retry logic
+- **Error Handling:** Exponential backoff with 3 retry attempts before user notification
+- **Type Safety:** Full TypeScript definitions for API responses and entities
+
+---
+
+## � Dependencies
+
+### Production
+
+- `react` & `react-dom` - Core React libraries
+- `react-router-dom` - Client-side routing
+- `@radix-ui/*` - Headless UI primitives (Dialog, Dropdown, Scroll Area, etc.)
+- `next-themes` - Theme management with system preference detection
+- `sonner` - Toast notification system
+- `clsx` & `tailwind-merge` - Conditional className utilities
+- `lodash` - Utility functions (debounce, throttle)
+- `slugify` - URL-friendly string generation
+
+### Development
+
+- `vite` - Build tool and dev server
+- `typescript` - Type checking and compilation
+- `eslint` - Linting with React and TypeScript plugins
+- `@vitejs/plugin-react` - Vite plugin for React Fast Refresh
+- `tailwindcss` - Styling framework
+- `postcss` & `autoprefixer` - CSS processing
+
+---
+
+
+### Required Variables
+
+Create a `.env` file in the client root directory:
+
+```ini
+# Google Books API Key (required)
+VITE_GOOGLE_BOOK_API_KEY="YOUR_API_KEY_HERE"
+
+# Backend API URL (for rating features, coming soon)
+VITE_API_URL="http://localhost:3000"
+````
+
+### Getting an API Key
+
+1. Visit the [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing one
+3. Enable the **Books API**
+4. Navigate to **Credentials** and create an API key
+5. (Optional) Restrict the key to Books API and your domain
+
+**Note:** Vite requires client-side environment variables to be prefixed with `VITE_` for security.
+
+---
+
+## 🚀 Building for Production
+
+```bash
+# Build the application
+pnpm build
+
+# The output will be in the dist/ directory
+# Optimized, minified, and ready for deployment
+```
+
+<!-- ### Build Optimizations
+
+- **Tree Shaking:** Removes unused code
+- **Code Splitting:** Dynamic imports for routes
+- **Minification:** Terser for JavaScript, cssnano for CSS
+- **Asset Optimization:** Images and fonts optimized for web
+
+### Deployment
+
+The `dist/` folder can be deployed to any static hosting service:
+
+- Vercel
+- Netlify
+- GitHub Pages
+- Cloudflare Pages
+
+--- -->
+
+## 🔮 Upcoming Features
+
+### Rating System Integration
+
+The client is being prepared to integrate with the backend rating API:
+
+- **UI Components:** Star/recommendation buttons on book detail pages
+- **State Management:** Local state for optimistic updates
+- **API Client:** Service methods for submitting and fetching ratings
+
+---
+
+## 🔧 Development Workflow
 
 ### Available Scripts
 
-To get started, clone the repository and run:
+```bash
+# Start development server (http://localhost:5173)
+pnpm dev
 
-`bash`
-pnpm install
+# Type-check and build for production
+pnpm build
 
-### Available Scripts
+# Preview production build locally
+pnpm preview
 
-The following scripts are available for development and building:
+# Run ESLint with auto-fix
+pnpm lint
+````
 
-- **Development:** `pnpm dev` (Starts the development server)
-- **Build:** `pnpm build` (Compiles TypeScript and builds the project for production)
-- **Linting:** `pnpm lint` (Runs **ESLint** for code quality checks)
-- **Preview:** `pnpm preview` (Serves the production build locally)
+### Code Quality Tools
 
-**ESLint** and **Prettier** are configured to ensure a consistent and high-quality coding experience.
+- **TypeScript:** Strict mode enabled with comprehensive type checking
+- **ESLint:** Custom configuration with React Hooks and a11y rules
+- **Prettier:** Code formatting (if configured)
+- **Vite:** Fast HMR with module graph optimization
+
+### Development Best Practices
+
+1. **Type Safety:** All components use TypeScript with proper prop types
+2. **Component Patterns:** Functional components with hooks
+3. **Error Boundaries:** Graceful error handling at route level
+4. **Accessibility:** ARIA attributes and keyboard navigation support
+5. **Mobile First:** Responsive design starting from mobile breakpoints
 
 ---
 
