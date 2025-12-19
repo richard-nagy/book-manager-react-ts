@@ -1,37 +1,37 @@
 import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
+import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
-import react from "eslint-plugin-react";
-import { defineConfig, globalIgnores } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
-export default defineConfig([
-    globalIgnores(["dist"]),
+export default tseslint.config(
+    {
+        ignores: ["dist", "*.cjs", ".eslintrc.cjs"],
+    },
+    js.configs.recommended,
+    ...tseslint.configs.recommended,
     {
         files: ["**/*.{ts,tsx}"],
         plugins: {
-            react: react,
+            react,
+            "react-hooks": reactHooks,
+            "react-refresh": reactRefresh,
         },
-        extends: [
-            js.configs.recommended,
-            tseslint.configs.recommended,
-            reactHooks.configs.flat.recommended,
-            reactRefresh.configs.vite,
-            eslintConfigPrettier,
-        ],
         languageOptions: {
             ecmaVersion: 2020,
             globals: globals.browser,
         },
         rules: {
+            ...reactHooks.configs.recommended.rules,
+            "react-refresh/only-export-components": [
+                "warn",
+                { allowConstantExport: true },
+            ],
             "no-console": ["error", { allow: ["warn", "error"] }],
             "react/jsx-key": "error",
-            "no-multiple-empty-lines": [
-                "error",
-                { max: 1, maxEOF: 0, maxBOF: 0 },
-            ],
+            "no-multiple-empty-lines": ["error", { max: 1, maxEOF: 0, maxBOF: 0 }],
             eqeqeq: ["error", "always"],
             "default-case": "error",
             "dot-notation": "error",
@@ -40,4 +40,5 @@ export default defineConfig([
             "prefer-const": "error",
         },
     },
-]);
+    eslintConfigPrettier
+);
