@@ -1,15 +1,18 @@
 import Cover from "@/components/Cover";
 import { Typography } from "@/components/ui/typography";
 import type { Volume } from "@/lib/types";
+import { Eye, Star } from "lucide-react";
 import { type FC, type ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 
 type BookProps = {
     /** The data object containing all volume information for a single book. */
     book: Volume;
+    /** Visit count of the book. */
+    visitCount: number;
 };
 
-const BookCard: FC<BookProps> = ({ book }): ReactElement => {
+const BookCard: FC<BookProps> = ({ book, visitCount }): ReactElement => {
     const navigate = useNavigate();
 
     const navigateToBook = () => {
@@ -36,6 +39,23 @@ const BookCard: FC<BookProps> = ({ book }): ReactElement => {
                 </Typography>
             }
             <div className="mt-1">{book.volumeInfo?.title}</div>
+            <div className="flex justify-between">
+                <div className="flex gap-1 items-center">
+                    <Star className="text-primary fill-primary" size="18" />
+                    <Typography variant="muted" className="font-m font-bold">
+                        {book.volumeInfo.averageRating ?? 0}
+                    </Typography>
+                    <Typography variant="muted" className="font-m">
+                        ({book.volumeInfo.ratingsCount ?? 0})
+                    </Typography>
+                </div>
+                <div className="flex gap-1 items-center">
+                    <Eye className="text-muted-foreground" size="18" />
+                    <Typography variant="muted" className="font-m font-bold">
+                        {visitCount}
+                    </Typography>
+                </div>
+            </div>
         </div>
     );
 };

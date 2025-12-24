@@ -5,10 +5,18 @@ import { Typography } from "@/components/ui/typography";
 import { useBook } from "@/context/BookContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Volume } from "@/lib/types";
+import { incrementVisit } from "@/services/VisitsApi";
 import parse from "html-react-parser";
-import { CircleQuestionMark, Star } from "lucide-react";
-import { useEffect, useMemo, type FC, type ReactElement } from "react";
+import { CircleQuestionMark, Eye, Star } from "lucide-react";
+import {
+    useEffect,
+    useMemo,
+    useState,
+    type FC,
+    type ReactElement,
+} from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 const AuthorList: FC<{ authors: string[] | undefined }> = ({ authors }) => {
     if (!authors || authors.length === 0) {
@@ -55,17 +63,42 @@ const BookDetails: FC = (): ReactElement => {
     const { id } = useParams<{ id: string }>();
     const { volumeFetchIsPending, volumeMap, fetchVolume } = useBook();
     const isMobile = useIsMobile();
+    const [visitCount, setVisitCount] = useState<number>(0);
 
     const volume: Volume | null = useMemo(
         () => (id ? (volumeMap?.get(id) ?? null) : null),
         [id, volumeMap],
     );
 
+    // Fetch volume
     useEffect(() => {
         if (id && !volume) {
             fetchVolume(id);
         }
     }, [fetchVolume, id, volume]);
+
+    const iconSize = useMemo(() => (isMobile ? "20" : "24"), [isMobile]);
+
+    // Track book view
+    useEffect(() => {
+        const fetchIncrementVisit = async () => {
+            if (!id) {
+                return;
+            }
+
+            try {
+                const newVisitCount = await incrementVisit(id);
+                setVisitCount(newVisitCount.count);
+            } catch (error) {
+                console.error("Failed to track visit:", error);
+                toast.error("Failed to track view", {
+                    description: "Could not update view count for this book.",
+                });
+            }
+        };
+
+        void fetchIncrementVisit();
+    }, [id]);
 
     if (volumeFetchIsPending) {
         return (
@@ -115,16 +148,28 @@ const BookDetails: FC = (): ReactElement => {
                             )}
                         </Typography>
 
-                        {/* Rating and Count */}
-                        <div className="flex gap-2 items-center">
-                            <Star
-                                className="text-primary fill-primary ml-3"
-                                size={isMobile ? "20" : "24"}
-                            />
-                            <b>{volumeInfo?.averageRating ?? 0}</b>
-                            <Typography variant="muted">
-                                ({volumeInfo?.ratingsCount ?? 0})
-                            </Typography>
+                        <div className="flex flex-col gap-2 ml-3">
+                            {/* Rating and Count */}
+                            <div className="flex gap-2 items-center">
+                                <Star
+                                    className="text-primary fill-primary"
+                                    size={iconSize}
+                                />
+                                <Typography variant="p" className="font-bold">
+                                    {volumeInfo?.averageRating ?? 0}
+                                </Typography>
+                                <Typography variant="muted">
+                                    ({volumeInfo?.ratingsCount ?? 0})
+                                </Typography>
+                            </div>
+
+                            {/* View count */}
+                            <div className="flex gap-2 items-center">
+                                <Eye size={iconSize} />
+                                <Typography variant="p" className="font-bold">
+                                    {visitCount}
+                                </Typography>
+                            </div>
                         </div>
                     </div>
 

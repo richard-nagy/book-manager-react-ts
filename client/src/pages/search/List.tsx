@@ -4,9 +4,11 @@ import { useBook } from "@/context/BookContext";
 import { firstPage } from "@/lib/constants";
 import { SearchQuery } from "@/lib/types";
 import BookCard from "@/pages/search/BookCard";
+import { getVisitCountBatch } from "@/services/VisitsApi";
 import { Frown } from "lucide-react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { toast } from "sonner";
 import ListPagination from "./ListPagination";
 
 const List = () => {
@@ -14,8 +16,15 @@ const List = () => {
 
     const [searchParams] = useSearchParams();
 
+    const [visitCounterMapById, setVisitCounterMapById] = useState<
+        Map<string, number>
+    >(new Map());
+
     const currentPageNumber = useMemo(
-        () => parseInt(searchParams.get(SearchQuery.page) ?? firstPage.toString()),
+        () =>
+            parseInt(
+                searchParams.get(SearchQuery.page) ?? firstPage.toString(),
+            ),
         [searchParams],
     );
 
@@ -23,6 +32,29 @@ const List = () => {
         () => booksByPage?.get(currentPageNumber),
         [booksByPage, currentPageNumber],
     );
+
+    useEffect(() => {
+        const fetchIncrementVisit = async () => {
+            if (!booksOfCurrentPage) return;
+
+            try {
+                const newVisitCounts = await getVisitCountBatch(
+                    booksOfCurrentPage.map((book) => book.id),
+                );
+
+                setVisitCounterMapById(
+                    new Map(newVisitCounts.map((e) => [e.id, e.count])),
+                );
+            } catch (error) {
+                console.error("Failed to fetch visit counts:", error);
+                toast.error("Failed to load view counts", {
+                    description: "Could not retrieve book view statistics.",
+                });
+            }
+        };
+
+        void fetchIncrementVisit();
+    }, [booksOfCurrentPage]);
 
     return (
         <div className="flex flex-col gap-10">
@@ -48,7 +80,11 @@ const List = () => {
                 booksOfCurrentPage.length > 0 && (
                     <div className="flex flex-wrap gap-6 mt-15 justify-center">
                         {booksOfCurrentPage.map((b) => (
-                            <BookCard key={b.id} book={b} />
+                            <BookCard
+                                key={b.id}
+                                book={b}
+                                visitCount={visitCounterMapById.get(b.id) ?? 0}
+                            />
                         ))}
                     </div>
                 )}

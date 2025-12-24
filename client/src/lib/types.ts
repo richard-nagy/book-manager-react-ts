@@ -89,3 +89,16 @@ export const LogoSize = {
 } as const;
 
 export type LogoSize = (typeof LogoSize)[keyof typeof LogoSize];
+
+/** Visit counter from the server. */
+export interface VisitCounter {
+    id: string;
+    count: number;
+}
+
+/** Generic API response structure */
+export interface ApiResponse<T> {
+    message: string;
+    ok: boolean;
+    data: T;
+}
