@@ -1,6 +1,7 @@
 import cors from "cors";
-import type { Express, NextFunction, Request, Response } from "express";
+import type { Express } from "express";
 import express from "express";
+import HttpError from "./utils/HttpError.js";
 import { visitsRouter } from "./visits/visits-routes.js";
 
 const app: Express = express();
@@ -34,13 +35,6 @@ app.use(
 app.use(express.json());
 app.use("/api", visitsRouter);
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error("Error:", err.message);
-    res.status(500).json({
-        message: err.message || "Internal Server Error",
-        ok: false,
-        data: null,
-    });
-});
+app.use(HttpError.errorHandler);
 
 export default app;
